@@ -1,0 +1,98 @@
+[
+    {
+        "id": 6,
+        "title": "Active Life Assistant",
+        "description": " [ Minor Project-II ] ",
+        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
+        "tags": ["Template", "Portfolio", "Responsive"],
+        "link": "/projects/portfolio"
+    },
+    {
+        "id": 7,
+        "title": "Movie Review Web Application ",
+        "description": " [ Minor Project-I ] ",
+        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
+        "tags": ["Template", "Portfolio", "Responsive"],
+        "link": "/projects/portfolio"
+    },
+    {
+        "id": 8,
+        "title": "Price Comparision from Online Sites",
+        "description": " [ Learning Project-II ]",
+        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
+        "tags": ["Template", "Portfolio", "Responsive"],
+        "link": "/projects/portfolio"
+    },
+    {
+        "id": 9,
+        "title": "ATM Simulator",
+        "description": " [ Learning Project-I ] ",
+        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
+        "tags": ["Template", "Portfolio", "Responsive"],
+        "link": "/projects/portfolio"
+    },
+    {
+        "id": 11,
+        "title": "My Task Manager",
+        "description": "Modern UI/UX design for to-do list",
+        "image": "https://i.pinimg.com/736x/51/81/9c/51819c0566eb155d5f90f9d4967da4ee.jpg",
+        "tags": ["UI/UX", "Audio", "Frontend"],
+        "link": "/projects/music"
+    },
+    {
+        "id": 4,
+        "title": "Music Streaming Interface",
+        "description": "Modern UI/UX design for music streaming with advanced audio features",
+        "image": "https://cdn.rri.co.id/berita/Biak/o/1734700323547-tips_pengatur_audio_spotify_primary/vc2u42jt9da0j7y.jpeg",
+        "tags": ["UI/UX", "Audio", "Frontend"],
+        "link": "/projects/music"
+    },
+    {
+        "id": 1,
+        "title": "Creative Festival Design",
+        "description": "An interactive celebration of culture through visual design and animation",
+        "image": "https://assets.vogue.com/photos/58c307824e4fd95144714128/master/w_2560%2Cc_limit/00-holding-what-to-expect-at-holi-festivals.jpg",
+        "tags": ["Design", "Animation", "Cultural"],
+        "link": "/projects/festival"
+    },
+    {
+        "id": 2,
+        "title": "Regional Heritage Portal",
+        "description": "Digital platform showcasing regional heritage and cultural identity",
+        "image": "https://kalingatv.com/wp-content/uploads/2024/04/Utkal-Divas.jpg",
+        "tags": ["Web Development", "Heritage", "UX Design"],
+        "link": "/projects/heritage"
+    },
+    {
+        "id": 3,
+        "title": "National Celebration Hub",
+        "description": "Interactive platform for national events and celebrations",
+        "image": "https://img.freepik.com/premium-photo/happy-independence-day-india-vector-illustration_1118862-4825.jpg?w=826",
+        "tags": ["Web App", "Interactive", "Responsive Design"],
+        "link": "/projects/national"
+    },
+    {
+        "id": 5,
+        "title": "ALL IN ONE ",
+        "description": "Quick access of all search engine used in our daily routine.",
+        "image": "https://miro.medium.com/v2/resize:fit:1400/1*wRSrF7T0B7sVF15QuQp54Q.jpeg",
+        "tags": ["Full Stack", "API Integration", "CSS-Animation"],
+        "link": "/projects/film"
+    },
+    {
+        "id": 10,
+        "title": "Developer Portfolio Template",
+        "description": "Customizable portfolio template for tech professionals",
+        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
+        "tags": ["Template", "Portfolio", "Responsive"],
+        "link": "/projects/portfolio"
+    },
+    {
+        "id": 12,
+        "title": "Developer Portfolio Template",
+        "description": "Customizable portfolio template for tech professionals",
+        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
+        "tags": ["Template", "Portfolio", "Responsive"],
+        "link": "/projects/portfolio"
+    }
+]

@@ -1,0 +1,33 @@
+<!-- templates/components/skills.html -->
+<section id="skills" class="skills-section py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Skills</h2>
+        
+        <div class="row">
+            {% for category, skill_list in skills.items() %}
+            <div class="col-md-6 mb-4">
+                <div class="skills-category">
+                    <h3 class="category-title mb-4">{{ category }}</h3>
+                    {% for skill in skill_list %}
+                    <div class="skill-item mb-4">
+                        <div class="d-flex justify-content-between mb-1">
+                            <h5 class="skill-name">{{ skill.name }}</h5>
+                            <span class="skill-percentage">{{ skill.percentage }}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" 
+                                 data-progress="{{ skill.percentage }}" 
+                                 style="width: 0%;" 
+                                 aria-valuenow="{{ skill.percentage }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

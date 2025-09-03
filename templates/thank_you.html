@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Thank You | Your Portfolio{% endblock %}
+
+{% block content %}
+<section class="thank-you-section">
+    <div class="container">
+        <div class="thank-you-content">
+            <h1 class="thank-you-heading">Thank You, {{ name }}!</h1>
+            <div class="success-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+                    <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M7 13l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <p class="thank-you-message">Your message has been received successfully!</p>
+            <p class="thank-you-detail">I appreciate you taking the time to reach out. I'll get back to you as soon as possible.</p>
+            
+            <div class="button-container">
+                <a href="{{ url_for('index') }}" class="back-button">Back to Portfolio</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simple animation for the success icon
+        const icon = document.querySelector('.success-icon');
+        setTimeout(() => {
+            icon.classList.add('animate-success');
+        }, 300);
+    });
+</script>
+{% endblock %}

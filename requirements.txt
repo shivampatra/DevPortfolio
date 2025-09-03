@@ -1,0 +1,28 @@
+project_structure/
+├── app.py                      # Main Flask application
+├── static/
+│   ├── css/
+│   │   ├── style.css           # Main styles
+│   │   └── animations.css      # Custom animations
+│   ├── js/
+│   │   ├── main.js             # Main JavaScript
+│   │   ├── particles.js        # 3D background
+│   │   └── skills-animation.js # Skills visualization
+│   └── images/                 # Project assets
+├── templates/
+│   ├── base.html               # Base template
+│   ├── index.html              # Main portfolio page
+│   ├── project_detail.html     # Individual project page
+│   ├── thank_you.html          # Contact form submission
+│   └── components/             # Reusable components
+│       ├── navbar.html
+│       ├── hero.html
+│       ├── projects.html
+│       ├── skills.html
+│       ├── contact.html
+│       └── footer.html
+└── requirements.txt            # Project dependencies
+
+
+All Feedbacks : 
+https://docs.google.com/spreadsheets/d/14pdgCvHO3hxRrHu_UFxjFmJF0SVMsr0aacUOZKvhu_E/edit?gid=817725527#gid=817725527

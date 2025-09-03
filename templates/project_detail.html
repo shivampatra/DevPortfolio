@@ -1,0 +1,76 @@
+<!-- templates/project_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ project.title }} | Portfolio{% endblock %}
+
+{% block content %}
+<section class="project-detail-hero">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('index') }}#projects">Projects</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ project.title }}</li>
+                    </ol>
+                </nav>
+                
+                <h1 class="project-title mb-4">{{ project.title }}</h1>
+                
+                <div class="project-tags mb-4">
+                    {% for tag in project.tags %}
+                    <span class="badge">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="project-content py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="project-image-full mb-5">
+                    <img src="{{ project.image }}" class="img-fluid" alt="{{ project.title }}">
+                </div>
+                
+                <div class="project-description mb-5">
+                    <h2 class="mb-4">Project Overview</h2>
+                    <p class="lead">{{ project.description }}</p>
+                    <p>This is a placeholder for the full project description. In a real application, this would contain detailed information about the project, its goals, challenges, solutions, and outcomes.</p>
+                    
+                    <h3 class="mt-5 mb-3">Technologies Used</h3>
+                    <ul class="tech-list">
+                        {% for tag in project.tags %}
+                        <li>{{ tag }}</li>
+                        {% endfor %}
+                        <li>Additional technologies would be listed here</li>
+                    </ul>
+                    
+                    <h3 class="mt-5 mb-3">Key Features</h3>
+                    <ul>
+                        <li>Feature 1 details</li>
+                        <li>Feature 2 details</li>
+                        <li>Feature 3 details</li>
+                        <li>Feature 4 details</li>
+                    </ul>
+                    
+                    <h3 class="mt-5 mb-3">Results</h3>
+                    <p>Information about project outcomes, metrics, and achievements would go here.</p>
+                </div>
+                
+                <div class="project-navigation d-flex justify-content-between">
+                    <a href="#" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Previous Project
+                    </a>
+                    <a href="#" class="btn btn-outline-primary">
+                        Next Project<i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

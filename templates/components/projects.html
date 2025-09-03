@@ -1,0 +1,29 @@
+<!-- templates/components/projects.html -->
+<section id="projects" class="projects-section py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Projects</h2>
+        <div class="row g-4">
+            {% for project in projects %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card project-card h-100">
+                    <div class="project-image-container">
+                        <img src="{{ project.image }}" class="card-img-top project-image" alt="{{ project.title }}">
+                        <div class="project-overlay">
+                            <a href="{{ project.link }}" class="btn btn-outline-light">View Details</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description }}</p>
+                        <div class="project-tags">
+                            {% for tag in project.tags %}
+                            <span class="badge">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

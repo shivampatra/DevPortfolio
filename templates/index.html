@@ -1,0 +1,39 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Portfolio | Home{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    {% include 'components/hero.html' %}
+    
+    <!-- Projects Section -->
+    {% include 'components/projects.html' %}
+    
+    <!-- Technologies Section -->
+    <section id="technologies" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Tech Stack</h2>
+            <div class="row justify-content-center">
+                {% for tech in tech_stack %}
+                <div class="col-6 col-md-3 col-lg-2 mb-4">
+                    <div class="tech-item text-center">
+                        <i class="{{ tech.icon }} tech-icon"></i>
+                        <h5 class="tech-name">{{ tech.name }}</h5>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    {% include 'components/skills.html' %}
+    
+    <!-- Contact Section -->
+    {% include 'components/contact.html' %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/skills-animation.js') }}"></script>
+{% endblock %}
