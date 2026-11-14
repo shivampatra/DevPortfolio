@@ -266,82 +266,464 @@ General Styles
   ======================
   Projects Section
   ======================
-  */
-  .projects-section {
+ /**
+ * Projects section
+ * Layered on Bootstrap 5 — load this AFTER bootstrap.css.
+ *
+ * Concept: a camera viewfinder. Hovering (or keyboard-focusing) a project
+ * "focuses" on it: corner brackets close in, rule-of-thirds lines appear and
+ * the image comes into colour. Cards also "lock on" once as they scroll in.
+ *
+ * Colors follow your Bootstrap primary (--bs-primary-rgb). Neutrals come from
+ * currentColor, so light, dark and data-bs-theme all work with no extra rules.
+ * It no longer needs --card-shadow, --dark-card, --light-card or --transition.
+ */
+
+/* ---------- Tokens ---------- */
+.projects-section {
+    --pj-accent: var(--bs-primary-rgb, 13, 110, 253);
+    --pj-on-accent: #fff;                  /* text on accent fills; change if your primary is light */
+    --pj-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --pj-radius: 1.25rem;
+
+    --pj-line:    color-mix(in srgb, currentColor 14%, transparent);
+    --pj-surface: color-mix(in srgb, currentColor 3.5%, transparent);
+    --pj-muted:   color-mix(in srgb, currentColor 66%, transparent);
+
     position: relative;
-    overflow: hidden;
-  }
-  
-  .project-card {
+    overflow-x: clip;
+}
+
+@supports not (color: color-mix(in srgb, red, blue)) {
+    .projects-section {
+        --pj-line:    rgba(128, 128, 128, 0.25);
+        --pj-surface: rgba(128, 128, 128, 0.06);
+        --pj-muted:   rgba(128, 128, 128, 0.95);
+    }
+}
+
+.projects-section .project-item[hidden],
+.projects-section .project-filters[hidden] {
+    display: none !important;
+}
+
+/* ---------- Filters (built by JS) ---------- */
+.projects-section .project-filters {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 48rem;
+    margin: 0 auto 1rem;
+}
+
+.projects-section .project-filter {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.95rem;
+    border: 1px solid var(--pj-line);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: color 0.35s ease, border-color 0.35s ease;
+}
+
+.projects-section .project-filter:hover {
+    border-color: rgba(var(--pj-accent), 0.55);
+}
+
+.projects-section .project-filter:focus-visible {
+    outline: 2px solid rgb(var(--pj-accent));
+    outline-offset: 3px;
+}
+
+.projects-section .filter-count {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.6;
+}
+
+/* Sliding highlight behind the active chip. White text is only applied once JS
+   has positioned it, so a failed measurement can never leave invisible text. */
+.projects-section .filter-pill {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-radius: 999px;
+    background: rgb(var(--pj-accent));
+    box-shadow: 0 8px 20px -8px rgba(var(--pj-accent), 0.65);
+    pointer-events: none;
+    transition:
+        transform 0.55s var(--pj-ease),
+        width 0.55s var(--pj-ease),
+        height 0.55s var(--pj-ease);
+}
+
+.projects-section .filter-pill.is-instant {
+    transition: none;
+}
+
+.projects-section .project-filters.is-ready .project-filter[aria-pressed="true"] {
+    border-color: transparent;
+    color: var(--pj-on-accent);
+}
+
+.projects-section .project-status {
+    min-height: 1.5rem;
+    margin: 0.25rem 0 1.75rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--pj-muted);
+}
+
+.projects-section .project-filters[hidden] + .project-status {
+    display: none;
+}
+
+/* ---------- Card ---------- */
+.projects-section .project-card {
+    --px: 0;                               /* pointer position, -1 to 1, set by JS */
+    --py: 0;
+    --lift: 0px;
+
+    position: relative;
     height: 100%;
-    border: none;
-    border-radius: 15px;
     overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: var(--transition);
-    background-color: var(--dark-card);
-  }
-  
-  body[data-bs-theme="light"] .project-card {
-    background-color: var(--light-card);
-  }
-  
-  .project-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--card-shadow-hover);
-  }
-  
-  .project-image-container {
+    border: 1px solid var(--pj-line);
+    border-radius: var(--pj-radius);
+    background: var(--pj-surface);
+    transform:
+        perspective(900px)
+        translateY(var(--lift))
+        rotateX(calc(var(--py) * -2.5deg))
+        rotateY(calc(var(--px) * 3deg));
+    transition:
+        transform 0.35s ease-out,
+        border-color 0.4s ease,
+        box-shadow 0.5s var(--pj-ease);
+}
+
+.projects-section .project-card:hover,
+.projects-section .project-card:focus-within {
+    --lift: -6px;
+    border-color: rgba(var(--pj-accent), 0.5);
+    box-shadow: 0 22px 44px -22px rgba(var(--pj-accent), 0.55);
+}
+
+.projects-section .project-card:has(.project-link:focus-visible) {
+    outline: 2px solid rgb(var(--pj-accent));
+    outline-offset: 4px;
+}
+
+.projects-section .project-link:focus-visible {
+    outline: none;
+}
+
+@supports not selector(:has(*)) {
+    .projects-section .project-link:focus-visible {
+        outline: 2px solid rgb(var(--pj-accent));
+        outline-offset: 4px;
+    }
+}
+
+/* ---------- Image + viewfinder ---------- */
+.projects-section .project-image-container {
     position: relative;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
-    height: 200px;
-  }
-  
-  .project-image {
+    background: var(--pj-line);
+}
+
+.projects-section .project-image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition);
-  }
-  
-  .project-card:hover .project-image {
-    transform: scale(1.1);
-  }
-  
-  .project-overlay {
+    filter: saturate(0.8) brightness(0.97);
+    transform:
+        translate3d(calc(var(--px) * -10px), calc(var(--py) * -8px), 0)
+        scale(var(--zoom, 1));
+    transition: transform 0.7s var(--pj-ease), filter 0.6s ease;
+}
+
+.projects-section .project-card:hover .project-image,
+.projects-section .project-card:focus-within .project-image {
+    --zoom: 1.12;
+    filter: saturate(1.05) brightness(1);
+}
+
+/* Corner brackets: they start at the frame edge and close in on hover */
+.projects-section .project-image-container::before {
+    --bk: rgba(255, 255, 255, 0.95);
+    --bk-len: 22px;
+    --bk-w: 2px;
+
+    content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(13, 110, 253, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    inset: 0;
+    z-index: 2;
     opacity: 0;
-    transition: var(--transition);
-  }
-  
-  .project-card:hover .project-overlay {
+    pointer-events: none;
+    background-image:
+        linear-gradient(var(--bk), var(--bk)), linear-gradient(var(--bk), var(--bk)),
+        linear-gradient(var(--bk), var(--bk)), linear-gradient(var(--bk), var(--bk)),
+        linear-gradient(var(--bk), var(--bk)), linear-gradient(var(--bk), var(--bk)),
+        linear-gradient(var(--bk), var(--bk)), linear-gradient(var(--bk), var(--bk));
+    background-position:
+        top left, top left,
+        top right, top right,
+        bottom left, bottom left,
+        bottom right, bottom right;
+    background-size:
+        var(--bk-len) var(--bk-w), var(--bk-w) var(--bk-len),
+        var(--bk-len) var(--bk-w), var(--bk-w) var(--bk-len),
+        var(--bk-len) var(--bk-w), var(--bk-w) var(--bk-len),
+        var(--bk-len) var(--bk-w), var(--bk-w) var(--bk-len);
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.45));
+    transition: inset 0.6s var(--pj-ease), opacity 0.35s ease;
+}
+
+/* Rule-of-thirds guides */
+.projects-section .project-image-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
+        linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
+        linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
+        linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3));
+    background-position: 33.333% 0, 66.666% 0, 0 33.333%, 0 66.666%;
+    background-size: 1px 100%, 1px 100%, 100% 1px, 100% 1px;
+    background-repeat: no-repeat;
+    transition: opacity 0.5s ease 0.12s;
+}
+
+.projects-section .project-card:hover .project-image-container::before,
+.projects-section .project-card:focus-within .project-image-container::before {
+    inset: 14px;
     opacity: 1;
-  }
-  
-  .project-tags {
+}
+
+.projects-section .project-card:hover .project-image-container::after,
+.projects-section .project-card:focus-within .project-image-container::after {
+    opacity: 1;
+}
+
+/* ---------- Body ---------- */
+.projects-section .card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.4rem 1.4rem;
+}
+
+.projects-section .project-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 650;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.projects-section .project-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;                         /* change to show more or fewer lines */
+    margin: 0 0 1.1rem;
+    overflow: hidden;
+    font-size: 0.925rem;
+    line-height: 1.6;
+    color: var(--pj-muted);
+}
+
+.projects-section .project-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 15px;
-  }
-  
-  .project-tags .badge {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
+    gap: 0.4rem;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    list-style: none;
+}
+
+.projects-section .project-tags .badge {
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--pj-line);
+    border-radius: 999px;
+    background: transparent;
     font-size: 0.75rem;
     font-weight: 500;
-  }
-  
+    line-height: 1.2;
+    color: var(--pj-muted);
+    transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+
+/* The tag you filtered by lights up on every card that has it */
+.projects-section .project-tags .badge.is-match {
+    border-color: rgba(var(--pj-accent), 0.5);
+    background: rgba(var(--pj-accent), 0.14);
+    color: color-mix(in srgb, rgb(var(--pj-accent)) 70%, currentColor);
+}
+
+/* ---------- Footer link ---------- */
+.projects-section .project-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--pj-line);
+}
+
+.projects-section .project-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: none;
+}
+
+.projects-section .project-link-text {
+    padding-bottom: 2px;
+    background: linear-gradient(currentColor, currentColor) left bottom / 0 1.5px no-repeat;
+    transition: background-size 0.45s var(--pj-ease);
+}
+
+.projects-section .project-card:hover .project-link-text,
+.projects-section .project-card:focus-within .project-link-text {
+    background-size: 100% 1.5px;
+}
+
+/* Two arrows in a circle: one leaves top-right as the next arrives from bottom-left */
+.projects-section .project-link-icon {
+    position: relative;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    overflow: hidden;
+    border: 1px solid var(--pj-line);
+    border-radius: 50%;
+    transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+
+.projects-section .project-link-icon svg {
+    position: absolute;
+    inset: 0;
+    width: 1rem;
+    height: 1rem;
+    margin: auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.5s var(--pj-ease);
+}
+
+.projects-section .project-link-icon svg:last-child {
+    transform: translate(-150%, 150%);
+}
+
+.projects-section .project-card:hover .project-link-icon,
+.projects-section .project-card:focus-within .project-link-icon {
+    border-color: rgb(var(--pj-accent));
+    background: rgb(var(--pj-accent));
+    color: var(--pj-on-accent);
+}
+
+.projects-section .project-card:hover .project-link-icon svg:first-child,
+.projects-section .project-card:focus-within .project-link-icon svg:first-child {
+    transform: translate(150%, -150%);
+}
+
+.projects-section .project-card:hover .project-link-icon svg:last-child,
+.projects-section .project-card:focus-within .project-link-icon svg:last-child {
+    transform: none;
+}
+
+/* ---------- Entrance: each card wipes open, settles, then "locks on" ----------
+   Only active when projects.js adds .is-enhanced. Animations use backwards
+   fill so they never fight the hover and tilt transforms afterwards. */
+.projects-section.is-enhanced .project-item:not(.is-in) .project-card {
+    opacity: 0;
+}
+
+.projects-section.is-enhanced .project-item.is-in .project-card {
+    animation: pj-wipe 0.9s var(--pj-ease) var(--d, 0ms) backwards;
+}
+
+.projects-section.is-enhanced .project-item.is-in .project-image {
+    animation: pj-settle 1.3s var(--pj-ease) var(--d, 0ms) backwards;
+}
+
+.projects-section.is-enhanced .project-item.is-in .card-body {
+    animation: pj-fade 0.7s ease calc(var(--d, 0ms) + 380ms) backwards;
+}
+
+.projects-section.is-enhanced .project-item.is-in .project-image-container::before {
+    animation: pj-lock 1.4s ease calc(var(--d, 0ms) + 450ms) backwards;
+}
+
+@keyframes pj-wipe {
+    from { opacity: 1; clip-path: inset(0 0 100% 0 round 1.25rem); }
+    to   { opacity: 1; clip-path: inset(0 0 0 0 round 1.25rem); }
+}
+
+@keyframes pj-settle {
+    from { transform: translate3d(0, 0, 0) scale(1.25); }
+    to   { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes pj-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes pj-lock {
+    0%   { inset: 0;    opacity: 0; }
+    45%  { inset: 14px; opacity: 1; }
+    75%  { inset: 14px; opacity: 1; }
+    100% { inset: 14px; opacity: 0; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .projects-section .project-card,
+    .projects-section .project-image,
+    .projects-section .project-image-container::before,
+    .projects-section .project-image-container::after,
+    .projects-section .project-link-text,
+    .projects-section .project-link-icon svg,
+    .projects-section .filter-pill {
+        transition: none;
+    }
+
+    .projects-section .project-card:hover,
+    .projects-section .project-card:focus-within {
+        --lift: 0px;
+    }
+
+    .projects-section .project-card:hover .project-image,
+    .projects-section .project-card:focus-within .project-image {
+        --zoom: 1;
+    }
+}  
   /* 
   ======================
   Technologies Section
