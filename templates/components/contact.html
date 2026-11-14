@@ -1,86 +1,104 @@
 <!-- templates/components/contact.html -->
-<section id="contact" class="contact-section py-5">
+{% from "components/_socials.html" import active_socials, social_icon %}
+
+<section id="contact" class="contact-section" aria-labelledby="contact-title">
     <div class="container">
-        <h2 class="section-title text-center mb-5">Get In Touch</h2>
-        
+        <h2 id="contact-title" class="section-title text-center">Get in touch</h2>
+
         <div class="row g-4">
             <div class="col-lg-5">
                 <div class="contact-info glass-card">
-                    <h3 class="mb-4">Contact Information</h3>
-                    
-                    <div class="contact-item mb-3">
-                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                    <h3 class="mb-4">Contact information</h3>
+
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt contact-icon" aria-hidden="true"></i>
                         <div>
-                            <h5>Location</h5>
+                            <h4>Location</h4>
                             <p>Bhubaneswar, Odisha, India</p>
                         </div>
                     </div>
-                    
-                    <div class="contact-item mb-3">
-                        <i class="fas fa-envelope contact-icon"></i>
+
+                    <div class="contact-item">
+                        <i class="fas fa-envelope contact-icon" aria-hidden="true"></i>
                         <div>
-                            <h5>Email</h5>
-                            <p>shivampatra@yahoo.com</p>
+                            <h4>Email</h4>
+                            <p><a href="mailto:shivampatra@yahoo.com">shivampatra@yahoo.com</a></p>
                         </div>
                     </div>
-                    
-                    <div class="contact-item mb-3">
-                        <i class="fas fa-phone contact-icon"></i>
-                        <div>
-                            <h5>Phone</h5>
-                            <p>+91 **********</p>
-                        </div>
+
+                    {# Phone block removed: it rendered a "Phone" heading with nothing under it.
+                       Add it back when there is a number to show:
+                    <div class="contact-item">
+                        <i class="fas fa-phone contact-icon" aria-hidden="true"></i>
+                        <div><h4>Phone</h4><p><a href="tel:+91XXXXXXXXXX">+91 XXXXX XXXXX</a></p></div>
                     </div>
-                    
-                    <div class="social-links mt-4">
-                        <a href="https://shivamportfolio.pythonanywhere.com/" class="social-link" aria-label="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/shivam-patra/" class="social-link" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://shivamportfolio.pythonanywhere.com/" class="social-link" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.instagram.com/shivam__official_____/" class="social-link" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                    #}
+
+                    {% if active_socials %}
+                    <div class="social-links">
+                        {% for s in active_socials[:6] %}{{ social_icon(s) }}{% endfor %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
-            
+
             <div class="col-lg-7">
                 <div class="contact-form glass-card">
-                    <h3 class="mb-4">Send a Message</h3>
-                    
-                    <form action="{{ url_for('contact') }}" method="POST">
+                    <h3 class="mb-4">Send a message</h3>
+
+                    <form action="{{ url_for('contact') }}" method="POST" novalidate>
+                        {# Only rendered when Flask-WTF's CSRFProtect is enabled in app.py,
+                           so this template is safe with or without it. #}
+                        {% if csrf_token is defined %}
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        {% endif %}
+
+                        {# Honeypot: reject the submission server-side if "website" is filled in #}
+                        <div class="hp-field" aria-hidden="true">
+                            <label for="website">Leave this field empty</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
-                                    <label for="name">Your Name</label>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                           placeholder="Your name" autocomplete="name"
+                                           minlength="2" maxlength="100" required>
+                                    <label for="name">Your name</label>
+                                    <div class="invalid-feedback">Please enter your name.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
-                                    <label for="email">Your Email</label>
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           placeholder="Your email" autocomplete="email"
+                                           maxlength="254" required>
+                                    <label for="email">Your email</label>
+                                    <div class="invalid-feedback">Please enter a valid email address.</div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="subject" name="subject"
+                                           placeholder="Subject" minlength="2" maxlength="150" required>
                                     <label for="subject">Subject</label>
+                                    <div class="invalid-feedback">Please add a subject.</div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="message" name="message" placeholder="Your Message" style="height: 150px" required></textarea>
-                                    <label for="message">Your Message</label>
+                                <div class="form-floating">
+                                    <textarea class="form-control contact-textarea" id="message" name="message"
+                                              placeholder="Your message" minlength="10" maxlength="2000" required></textarea>
+                                    <label for="message">Your message</label>
+                                    <div class="invalid-feedback">Please write a message of at least 10 characters.</div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <span class="spinner-border spinner-border-sm d-none me-2" aria-hidden="true"></span>
+                                    <span class="btn-label">Send message</span>
+                                </button>
                             </div>
                         </div>
                     </form>
