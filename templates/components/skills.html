@@ -1,5 +1,5 @@
 <!-- templates/components/skills.html -->
-<section id="skills" class="skills-section py-5">
+<!-- <section id="skills" class="skills-section py-5">
     <div class="container">
         <h2 class="section-title text-center mb-5">Skills</h2>
         
@@ -25,6 +25,49 @@
                         </div>
                     </div>
                     {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section> -->
+
+<!-- 2nd VERSION-->
+
+
+<!-- templates/components/skills.html -->
+<section id="skills" class="skills-section py-5" aria-labelledby="skills-title">
+    <div class="container">
+        <h2 id="skills-title" class="section-title text-center mb-5">Skills</h2>
+
+        <div class="row g-4">
+            {% for category, skill_list in skills.items() %}
+            {% set category_index = loop.index %}
+            <div class="col-md-6">
+                <div class="skills-category">
+                    <h3 class="category-title">{{ category }}</h3>
+
+                    <ul class="skill-list">
+                        {% for skill in skill_list %}
+                        {% set skill_id = 'skill-' ~ category_index ~ '-' ~ loop.index %}
+                        <li class="skill-item">
+                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                <span class="skill-name" id="{{ skill_id }}">{{ skill.name }}</span>
+                                <span class="skill-percentage" aria-hidden="true">{{ skill.percentage }}%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar"
+                                     aria-labelledby="{{ skill_id }}"
+                                     aria-valuenow="{{ skill.percentage }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"
+                                     data-progress="{{ skill.percentage }}"
+                                     style="--value: {{ skill.percentage }}%;">
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             {% endfor %}
