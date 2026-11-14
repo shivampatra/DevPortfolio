@@ -1,90 +1,64 @@
-<!-- templates/components/navbar.html
-<header class="navbar-wrapper sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                <dotlottie-player
-                    src="https://lottie.host/77ff0ebb-d637-4607-981b-f09999cfbe35/Tb411PJ1dH.lottie"
-                    background="transparent"
-                    speed="1"
-                    style="width: 50px; height: 50px;"
-                    loop
-                    autoplay>
-                </dotlottie-player>
-                <span class="ms-2">DevPortfolio</span>
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#hero">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#projects">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#technologies">Technologies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#skills">Skills</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header> -->
 <!-- templates/components/navbar.html -->
+{#
+   Anchors are built from url_for('index') so they also work from other pages
+   (e.g. project_detail). A bare "#projects" only works on the home page.
+   The skip link needs <main id="main"> in base.html.
+#}
+{% set home = url_for('index') %}
+{% set nav_items = [
+    ('hero',         'Home',         'fa-home'),
+    ('projects',     'Projects',     'fa-code-branch'),
+    ('technologies', 'Technologies', 'fa-laptop-code'),
+    ('skills',       'Skills',       'fa-cogs'),
+    ('contact',      'Contact',      'fa-envelope'),
+] %}
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <header class="navbar-wrapper sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg" aria-label="Primary">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+
+            <a class="navbar-brand" href="{{ home }}">
                 <dotlottie-player
+                    class="brand-lottie"
                     src="https://lottie.host/77ff0ebb-d637-4607-981b-f09999cfbe35/Tb411PJ1dH.lottie"
                     background="transparent"
                     speed="1"
-                    style="width: 50px; height: 50px;"
                     loop
-                    autoplay>
+                    autoplay
+                    aria-hidden="true">
                 </dotlottie-player>
-                <span class="ms-2">DevPortfolio</span>
+                <span class="brand-text">Shivam<span class="brand-sep">|</span>Portfolio</span>
             </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    {% for id, label, icon in nav_items %}
                     <li class="nav-item">
-                        <a class="nav-link active" href="#hero">Home</a>
+                        <a class="nav-link" href="{{ home }}#{{ id }}">
+                            <i class="fas {{ icon }}" aria-hidden="true"></i><span>{{ label }}</span>
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#projects">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#technologies">Technologies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#skills">Skills</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
+                    {% endfor %}
                 </ul>
-                <!-- Picture Icon -->
-                <a href="https://tinyurl.com/5n96h8a9" style="text-decoration: none;">
-                    <img src="{{ url_for('static', filename='images/profile.png') }}" alt="Profile" class="ms-3" style="width: 32px; height: 32px; border-radius: 50%;">
-                </a>
+
+                <div class="ms-lg-3 profile-container">
+                    <a href="https://tinyurl.com/5n96h8a9" class="profile-link"
+                       target="_blank" rel="noopener noreferrer"
+                       aria-label="Shivam's profile (opens in a new tab)">
+                        <img src="{{ url_for('static', filename='images/profile.png') }}"
+                             alt="" width="40" height="40" class="profile-image" decoding="async">
+                    </a>
+                </div>
             </div>
+
         </div>
     </nav>
 </header>
