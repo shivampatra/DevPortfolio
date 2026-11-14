@@ -1,55 +1,40 @@
-<!-- <!-- templates/components/projects.html -->
-<!-- <section id="projects" class="projects-section py-5">
-    <div class="container">
-        <h2 class="section-title text-center mb-5">Projects</h2>
-        <div class="row g-4">
-            {% for project in projects %}
-            <div class="col-md-6 col-lg-4">
-                <div class="card project-card h-100">
-                    <div class="project-image-container">
-                        <img src="{{ project.image }}" class="card-img-top project-image" alt="{{ project.title }}">
-                        <div class="project-overlay">
-                            <a href="{{ project.link }}" class="btn btn-outline-light">View Details</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ project.title }}</h5>
-                        <p class="card-text">{{ project.description }}</p>
-                        <div class="project-tags">
-                            {% for tag in project.tags %}
-                            <span class="badge">{{ tag }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section> -->
-
-
-
-<!-- 2nd VERSION--> 
-
-
 <!-- templates/components/projects.html -->
-<section id="projects" class="projects-section py-5" aria-labelledby="projects-title">
+<section id="projects" class="projects-section" aria-labelledby="projects-title">
     <div class="container">
-        <h2 id="projects-title" class="section-title text-center mb-4">Projects</h2>
+        <h2 id="projects-title" class="section-title text-center">Projects</h2>
 
-        <!-- Filled in by projects.js from the tags below. Stays hidden without JS. -->
+        {# Filled in by main.js from the tags below. Stays hidden without JS. #}
         <div class="project-filters" role="group" aria-label="Filter projects by technology" hidden></div>
         <p class="project-status" role="status"></p>
 
         <div class="row g-4 projects-grid">
             {% for project in projects %}
-            <div class="col-md-6 col-lg-4 project-item">
+            {# A project with no link is an "in progress" placeholder: a wide, non-clickable banner #}
+            {% set is_soon = not project.link %}
+            <div class="{{ 'col-12 is-soon' if is_soon else 'col-md-6 col-lg-4' }} project-item">
+
+                {% if is_soon %}
+                <article class="project-soon">
+                    <div class="project-soon-media">
+                        {% if project.image %}
+                        <img src="{{ project.image }}" alt="" loading="lazy" decoding="async">
+                        {% endif %}
+                    </div>
+                    <div class="project-soon-body">
+                        <p class="project-soon-status"><span class="project-soon-dot" aria-hidden="true"></span>In progress</p>
+                        <h3 class="project-soon-title">{{ project.title }}</h3>
+                        <p class="project-soon-text">{{ project.description }}</p>
+                    </div>
+                    <div class="project-soon-tape" aria-hidden="true"></div>
+                </article>
+
+                {% else %}
                 <article class="card project-card h-100">
                     <div class="project-image-container">
+                        {# alt is empty on purpose: the heading and link below already name the project #}
                         {% if project.image %}
                         <img src="{{ project.image }}" class="card-img-top project-image"
-                             alt="{{ project.title }}" loading="lazy" decoding="async">
+                             alt="" loading="lazy" decoding="async">
                         {% endif %}
                     </div>
 
@@ -66,16 +51,27 @@
                         {% endif %}
 
                         <div class="project-footer">
+                            {# stretched-link makes the whole card clickable #}
                             <a href="{{ project.link }}" class="project-link stretched-link">
                                 <span class="project-link-text">View details<span class="visually-hidden"> of {{ project.title }}</span></span>
-                                <span class="project-link-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
-                                    <svg viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
-                                </span>
                             </a>
+
+                            {# Sits above the stretched link (z-index in CSS) so it stays clickable #}
+                            {% if project.live and project.live_link %}
+                            <a href="{{ project.live_link }}" class="project-live" target="_blank" rel="noopener noreferrer">
+                                <span class="project-live-dot" aria-hidden="true"></span>Live demo<span class="visually-hidden"> of {{ project.title }} (opens in a new tab)</span>
+                            </a>
+                            {% endif %}
+
+                            <span class="project-link-icon" aria-hidden="true">
+                                <svg viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
+                                <svg viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
+                            </span>
                         </div>
                     </div>
                 </article>
+                {% endif %}
+
             </div>
             {% endfor %}
         </div>
