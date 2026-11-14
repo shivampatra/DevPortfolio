@@ -1,1 +1,44 @@
+{# templates/components/_socials.html
+   One list of social profiles, shared by the footer and the contact section.
+   A profile is only rendered when it has a url, so there are no dead "#" links.
+   Fill in a url below to switch a profile on.
 
+   Usage:
+     {% from "components/_socials.html" import active_socials, social_item, social_icon %}
+#}
+{% set socials = [
+    {'name': 'GitHub',         'icon': 'fab fa-github',         'url': 'https://github.com/shivampatra'},
+    {'name': 'LinkedIn',       'icon': 'fab fa-linkedin',       'url': 'https://www.linkedin.com/in/shivam-patra/'},
+    {'name': 'Instagram',      'icon': 'fab fa-instagram',      'url': 'https://www.instagram.com/shivam__official_____/'},
+    {'name': 'Twitter',        'icon': 'fab fa-twitter',        'url': ''},
+    {'name': 'Facebook',       'icon': 'fab fa-facebook',       'url': ''},
+    {'name': 'YouTube',        'icon': 'fab fa-youtube',        'url': ''},
+    {'name': 'Dev.to',         'icon': 'fab fa-dev',            'url': ''},
+    {'name': 'Medium',         'icon': 'fab fa-medium',         'url': ''},
+    {'name': 'Stack Overflow', 'icon': 'fab fa-stack-overflow', 'url': ''},
+    {'name': 'Discord',        'icon': 'fab fa-discord',        'url': ''},
+    {'name': 'Telegram',       'icon': 'fab fa-telegram',       'url': ''},
+    {'name': 'Hashnode',       'icon': 'fab fa-hashnode',       'url': ''},
+    {'name': 'Reddit',         'icon': 'fab fa-reddit',         'url': ''},
+    {'name': 'CodePen',        'icon': 'fab fa-codepen',        'url': ''},
+    {'name': 'Figma',          'icon': 'fab fa-figma',          'url': ''},
+    {'name': 'Dribbble',       'icon': 'fab fa-dribbble',       'url': ''},
+    {'name': 'Behance',        'icon': 'fab fa-behance',        'url': ''},
+] %}
+{% set active_socials = socials | selectattr('url') | list %}
+
+{# Icon + name, used in the footer #}
+{% macro social_item(s) -%}
+<a href="{{ s.url }}" class="site-social-item" target="_blank" rel="noopener noreferrer">
+    <i class="{{ s.icon }}" aria-hidden="true"></i>
+    <span>{{ s.name }}<span class="visually-hidden"> (opens in a new tab)</span></span>
+</a>
+{%- endmacro %}
+
+{# Icon only, used in the contact card #}
+{% macro social_icon(s) -%}
+<a href="{{ s.url }}" class="social-link" target="_blank" rel="noopener noreferrer"
+   aria-label="{{ s.name }} (opens in a new tab)">
+    <i class="{{ s.icon }}" aria-hidden="true"></i>
+</a>
+{%- endmacro %}
