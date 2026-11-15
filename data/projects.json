@@ -1,98 +1,391 @@
 [
     {
-        "id": 6,
+        "id": 12,
         "title": "Active Life Assistant",
-        "description": " [ Minor Project-II ] ",
-        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
-        "tags": ["Template", "Portfolio", "Responsive"],
-        "link": "/projects/portfolio"
+        "description": "Minor Project II. A health and activity companion that gathers sensor readings over IoT, uses machine learning to recognise movement and wellness patterns, and shows the results in a Flask web dashboard.",
+        "image": "/static/images/image1.svg",
+        "tags": ["Machine Learning", "IoT", "Flask"],
+        "link": "/projects/ActiveLifeAssistant",
+        "live": false,
+        "live_link": "",
+        "category": "Minor Project II",
+        "tagline": "Turns raw sensor readings into movement and wellness insights.",
+        "goal": "Activity trackers produce plenty of numbers but leave the interpretation to the user. This project closes that gap: sensor data is collected over IoT, a machine learning model recognises patterns in it, and a web dashboard presents the result in plain, readable form.",
+        "flow": [
+            {"title": "Collect", "text": "Sensors capture movement and activity readings and send them over IoT."},
+            {"title": "Learn", "text": "A machine learning model recognises movement and wellness patterns in the data."},
+            {"title": "Serve", "text": "A Flask backend receives the readings and prepares the results."},
+            {"title": "Show", "text": "The web dashboard presents the patterns so they can be read at a glance."}
+        ],
+        "features": [
+            {"icon": "fa-wifi", "title": "IoT data collection", "text": "Sensor readings are gathered over IoT instead of being entered by hand."},
+            {"icon": "fa-brain", "title": "Pattern recognition", "text": "Machine learning identifies movement and wellness patterns in the readings."},
+            {"icon": "fa-chart-line", "title": "Web dashboard", "text": "Results are shown in a Flask dashboard that works in any browser."},
+            {"icon": "fa-heartbeat", "title": "Wellness focus", "text": "The output is framed around activity and wellbeing, not raw numbers."}
+        ],
+        "stack": [
+            {"layer": "Devices", "items": ["IoT sensors"]},
+            {"layer": "Intelligence", "items": ["Machine Learning"]},
+            {"layer": "Interface", "items": ["Flask web dashboard"]}
+        ],
+        "takeaways": [
+            "Designing a system across hardware, a model and a web interface, not just one layer.",
+            "Presenting model output in a form non-technical users can act on."
+        ]
     },
     {
-        "id": 7,
-        "title": "Movie Review Web Application ",
-        "description": " [ Minor Project-I ] ",
-        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
-        "tags": ["Template", "Portfolio", "Responsive"],
-        "link": "/projects/portfolio"
+        "id": 11,
+        "title": "Movie Review Web App",
+        "description": "Minor Project I. A full-stack movie review platform where people can browse films and share reviews. React.js powers the interface, Spring Boot the backend and MongoDB the data.",
+        "image": "/static/images/image2.svg",
+        "tags": ["React", "Spring Boot", "MongoDB", "Full Stack"],
+        "link": "/projects/MRWA",
+        "live": false,
+        "live_link": "",
+        "category": "Minor Project I",
+        "tagline": "Browse films, then say what you think.",
+        "goal": "A review platform needs two things to feel alive: an easy way to find films and an easy way to say something about them. This project builds both as a full-stack application, with a React interface in front of a Spring Boot backend and a MongoDB database.",
+        "flow": [
+            {"title": "Browse", "text": "Visitors explore the film catalogue in the React interface."},
+            {"title": "Open", "text": "Selecting a film shows its details and the reviews so far."},
+            {"title": "Review", "text": "A visitor writes a review and submits it."},
+            {"title": "Store", "text": "Spring Boot receives the review and stores it in MongoDB, ready for the next visitor."}
+        ],
+        "features": [
+            {"icon": "fa-film", "title": "Film browsing", "text": "A catalogue of films that is quick to scan and easy to explore."},
+            {"icon": "fa-comment-dots", "title": "Shared reviews", "text": "Anyone can read what others think and add their own review."},
+            {"icon": "fa-layer-group", "title": "Component-based UI", "text": "React.js builds the interface from small, reusable components."},
+            {"icon": "fa-database", "title": "Document storage", "text": "MongoDB keeps films and reviews as flexible documents."}
+        ],
+        "stack": [
+            {"layer": "Interface", "items": ["React.js"]},
+            {"layer": "Server", "items": ["Spring Boot"]},
+            {"layer": "Data", "items": ["MongoDB"]}
+        ],
+        "takeaways": [
+            "Connecting a React front end to a Java backend and a NoSQL database.",
+            "Structuring a full-stack app so each layer has one clear job."
+        ]
     },
     {
-        "id": 8,
-        "title": "Price Comparision from Online Sites",
-        "description": " [ Learning Project-II ]",
-        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
-        "tags": ["Template", "Portfolio", "Responsive"],
-        "link": "/projects/portfolio"
+        "id": 10,
+        "title": "Online Price Comparison",
+        "description": "Learning Project II. Pulls product listings from online stores with web scraping and compares prices side by side, so the best deal is easy to spot. Built with Flask and MySQL.",
+        "image": "/static/images/image3.svg",
+        "tags": ["Web Scraping", "Flask", "MySQL"],
+        "link": "/projects/PCOOS",
+        "live": false,
+        "live_link": "",
+        "category": "Learning Project II",
+        "tagline": "Every store's price, side by side.",
+        "goal": "Finding the best price usually means opening tab after tab. This project does the legwork: it pulls product listings from online stores with web scraping and lines them up so the best deal is easy to spot.",
+        "flow": [
+            {"title": "Scrape", "text": "Product listings are pulled from online stores with web scraping."},
+            {"title": "Clean", "text": "Names and prices are tidied into one consistent format."},
+            {"title": "Store", "text": "The results are saved in MySQL."},
+            {"title": "Compare", "text": "A Flask page shows the stores side by side, with the best deal easy to spot."}
+        ],
+        "features": [
+            {"icon": "fa-cloud-download-alt", "title": "Automated collection", "text": "Listings are gathered by a scraper, not copied by hand."},
+            {"icon": "fa-balance-scale", "title": "Side-by-side comparison", "text": "Prices from different stores sit next to each other."},
+            {"icon": "fa-tags", "title": "Best deal at a glance", "text": "The lowest price stands out without any digging."},
+            {"icon": "fa-database", "title": "Saved listings", "text": "MySQL stores the collected listings for comparison."}
+        ],
+        "stack": [
+            {"layer": "Collection", "items": ["Web Scraping"]},
+            {"layer": "Server", "items": ["Flask"]},
+            {"layer": "Data", "items": ["MySQL"]}
+        ],
+        "takeaways": [
+            "Turning messy, differently formatted web data into something comparable.",
+            "Combining scraping, a database and a web app into one workflow."
+        ]
     },
     {
         "id": 9,
         "title": "ATM Simulator",
-        "description": " [ Learning Project-I ] ",
-        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
-        "tags": ["Template", "Portfolio", "Responsive"],
-        "link": "/projects/portfolio"
+        "description": "Learning Project I. A web-based ATM simulation that mirrors the everyday flow of signing in, checking balances and making transactions, built with Java Server Pages and MySQL.",
+        "image": "/static/images/image4.svg",
+        "tags": ["Java", "JSP", "MySQL"],
+        "link": "/projects/AS",
+        "live": false,
+        "live_link": "",
+        "category": "Learning Project I",
+        "tagline": "The familiar ATM routine, rebuilt for the browser.",
+        "goal": "Everyone knows how an ATM behaves, which makes it a good way to practise application flow. This project reproduces the everyday routine of signing in, checking a balance and making transactions using Java Server Pages and MySQL.",
+        "flow": [
+            {"title": "Sign in", "text": "The user identifies themselves to start a session."},
+            {"title": "Choose", "text": "A menu offers balance checks and transactions."},
+            {"title": "Transact", "text": "The chosen operation runs and the balance changes accordingly."},
+            {"title": "Record", "text": "MySQL keeps the account data up to date."}
+        ],
+        "features": [
+            {"icon": "fa-sign-in-alt", "title": "Sign-in flow", "text": "Each session starts by identifying the account holder."},
+            {"icon": "fa-wallet", "title": "Balance checks", "text": "Current balances are one step away from the main menu."},
+            {"icon": "fa-exchange-alt", "title": "Transactions", "text": "Transactions follow the order people expect from a real machine."},
+            {"icon": "fa-database", "title": "Persistent data", "text": "Account records live in MySQL, not in the page."}
+        ],
+        "stack": [
+            {"layer": "Language", "items": ["Java"]},
+            {"layer": "Interface", "items": ["JSP"]},
+            {"layer": "Data", "items": ["MySQL"]}
+        ],
+        "takeaways": [
+            "Modelling a real-world process as clear, ordered screens.",
+            "Reading and writing database records from server-side Java."
+        ]
     },
     {
-        "id": 11,
-        "title": "My Task Manager",
-        "description": "Modern UI/UX design for to-do list",
-        "image": "https://i.pinimg.com/736x/51/81/9c/51819c0566eb155d5f90f9d4967da4ee.jpg",
-        "tags": ["UI/UX", "Audio", "Frontend"],
-        "link": "/projects/music"
+        "id": 8,
+        "title": "TaskMaster: Task and Habit Tracker",
+        "description": "Turn daily tasks into lasting habits with a structured three-phase system. Each phase lasts a few days to build consistency, and tasks can be added for any day or tied to a specific phase. Reminders keep every routine on track.",
+        "image": "/static/images/image5.svg",
+        "tags": ["UI/UX", "SQLite", "Notifications"],
+        "link": "/projects/MTM",
+        "live": true,
+        "live_link": "https://shivampatra.pythonanywhere.com/todo/",
+        "category": "Web app",
+        "tagline": "Turn daily tasks into lasting habits.",
+        "goal": "Good intentions fade when there is no structure. TaskMaster gives routines a three-phase shape: each phase lasts a few days, so consistency builds step by step, and reminders keep every routine on track.",
+        "flow": [
+            {"title": "Start", "text": "Phase one begins the routine with a few days of repetition."},
+            {"title": "Build", "text": "Phase two builds consistency on top of that first foothold."},
+            {"title": "Lock in", "text": "Phase three turns the routine into a habit."}
+        ],
+        "features": [
+            {"icon": "fa-layer-group", "title": "Three-phase system", "text": "A clear structure that makes progress visible from one phase to the next."},
+            {"icon": "fa-calendar-check", "title": "Flexible planning", "text": "Tasks can be added for any day, or tied to a specific phase."},
+            {"icon": "fa-bell", "title": "Reminders", "text": "Notifications keep every routine on track."},
+            {"icon": "fa-pencil-ruler", "title": "Focused interface", "text": "A clean UI keeps attention on what needs doing today."}
+        ],
+        "stack": [
+            {"layer": "Design", "items": ["UI/UX"]},
+            {"layer": "Data", "items": ["SQLite"]},
+            {"layer": "Alerts", "items": ["Notifications"]}
+        ],
+        "takeaways": [
+            "Designing around a behaviour, habit formation, and not just a task list.",
+            "Using reminders to support a routine."
+        ]
     },
     {
-        "id": 4,
+        "id": 7,
         "title": "Music Streaming Interface",
-        "description": "Modern UI/UX design for music streaming with advanced audio features",
-        "image": "https://cdn.rri.co.id/berita/Biak/o/1734700323547-tips_pengatur_audio_spotify_primary/vc2u42jt9da0j7y.jpeg",
-        "tags": ["UI/UX", "Audio", "Frontend"],
-        "link": "/projects/music"
+        "description": "A Spotify-inspired front end that closely matches the original's interface and most of its features, built as a study in layout, audio playback and interaction design.",
+        "image": "/static/images/image6.svg",
+        "tags": ["Frontend", "UI/UX", "Audio"],
+        "link": "/projects/music",
+        "live": false,
+        "live_link": "",
+        "category": "Front-end study",
+        "tagline": "A close study of a familiar music player.",
+        "goal": "Music apps look simple but pack in a lot of interaction. This front end recreates a Spotify-inspired interface, closely matching the original's layout and most of its features, as a study in layout, audio playback and interaction design.",
+        "features": [
+            {"icon": "fa-th-large", "title": "Faithful layout", "text": "The structure of the interface closely matches the original's."},
+            {"icon": "fa-play-circle", "title": "Audio playback", "text": "Playback controls drive real audio in the browser."},
+            {"icon": "fa-sliders-h", "title": "Interaction design", "text": "Controls respond the way listeners expect them to."},
+            {"icon": "fa-puzzle-piece", "title": "Feature coverage", "text": "Most of the original's features are reproduced, not just its look."}
+        ],
+        "stack": [
+            {"layer": "Interface", "items": ["Frontend"]},
+            {"layer": "Design", "items": ["UI/UX"]},
+            {"layer": "Media", "items": ["Audio"]}
+        ],
+        "takeaways": [
+            "Studying a polished interface closely to understand why it works.",
+            "Wiring audio playback to custom controls."
+        ]
     },
     {
-        "id": 1,
+        "id": 6,
         "title": "Creative Festival Design",
-        "description": "An interactive celebration of culture through visual design and animation",
-        "image": "https://assets.vogue.com/photos/58c307824e4fd95144714128/master/w_2560%2Cc_limit/00-holding-what-to-expect-at-holi-festivals.jpg",
-        "tags": ["Design", "Animation", "Cultural"],
-        "link": "/projects/festival"
-    },
-    {
-        "id": 2,
-        "title": "Regional Heritage Portal",
-        "description": "Digital platform showcasing regional heritage and cultural identity",
-        "image": "https://kalingatv.com/wp-content/uploads/2024/04/Utkal-Divas.jpg",
-        "tags": ["Web Development", "Heritage", "UX Design"],
-        "link": "/projects/heritage"
-    },
-    {
-        "id": 3,
-        "title": "National Celebration Hub",
-        "description": "Interactive platform for national events and celebrations",
-        "image": "https://img.freepik.com/premium-photo/happy-independence-day-india-vector-illustration_1118862-4825.jpg?w=826",
-        "tags": ["Web App", "Interactive", "Responsive Design"],
-        "link": "/projects/national"
+        "description": "An interactive celebration of Holi, the festival of colours, told through bold visual design and animation.",
+        "image": "/static/images/image7.svg",
+        "tags": ["Animation", "UI/UX", "Frontend"],
+        "link": "/projects/festival",
+        "live": true,
+        "live_link": "https://shivampatra.pythonanywhere.com/holi",
+        "category": "Design project",
+        "tagline": "Holi in motion: colour, rhythm and play.",
+        "goal": "Holi is about colour and joy, so the page had to feel the same. This interactive celebration uses bold visual design and animation to bring the festival of colours to the screen.",
+        "features": [
+            {"icon": "fa-palette", "title": "Bold colour", "text": "A vivid palette carries the spirit of the festival."},
+            {"icon": "fa-magic", "title": "Animation", "text": "Motion gives the page the energy of the celebration itself."},
+            {"icon": "fa-hand-pointer", "title": "Interactive", "text": "Visitors take part instead of just looking."}
+        ],
+        "stack": [
+            {"layer": "Visuals", "items": ["Animation"]},
+            {"layer": "Interface", "items": ["Frontend", "UI/UX"]}
+        ],
+        "takeaways": [
+            "Using animation to carry emotion, not just decoration.",
+            "Building a single-purpose page around one clear mood."
+        ]
     },
     {
         "id": 5,
-        "title": "ALL IN ONE ",
-        "description": "Quick access of all search engine used in our daily routine.",
-        "image": "https://miro.medium.com/v2/resize:fit:1400/1*wRSrF7T0B7sVF15QuQp54Q.jpeg",
-        "tags": ["Full Stack", "API Integration", "CSS-Animation"],
-        "link": "/projects/film"
+        "title": "Regional Heritage Portal",
+        "description": "A digital portal celebrating Utkal Divas and Odisha's heritage and cultural identity, designed to make the region's story easy and enjoyable to explore.",
+        "image": "/static/images/image8.svg",
+        "tags": ["Web App", "UI/UX", "Heritage"],
+        "link": "/projects/heritage",
+        "live": true,
+        "live_link": "https://shivampatra.pythonanywhere.com/UtkalDivas",
+        "category": "Cultural web app",
+        "tagline": "Odisha's story, easy to explore.",
+        "goal": "Utkal Divas marks the identity of Odisha. This portal presents the region's heritage and culture in a way that is easy and enjoyable to explore.",
+        "features": [
+            {"icon": "fa-landmark", "title": "Heritage content", "text": "Odisha's history and cultural identity are the heart of the portal."},
+            {"icon": "fa-compass", "title": "Easy exploration", "text": "Visitors can find their own path through the material."},
+            {"icon": "fa-palette", "title": "Designed for the subject", "text": "The visual design is shaped by the region's character."}
+        ],
+        "stack": [
+            {"layer": "Application", "items": ["Web App"]},
+            {"layer": "Design", "items": ["UI/UX"]},
+            {"layer": "Subject", "items": ["Heritage"]}
+        ],
+        "takeaways": [
+            "Designing around culture and content, not only features.",
+            "Organising rich material so visitors can explore it at their own pace."
+        ]
     },
     {
-        "id": 10,
-        "title": "Developer Portfolio Template",
-        "description": "Customizable portfolio template for tech professionals",
-        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
-        "tags": ["Template", "Portfolio", "Responsive"],
-        "link": "/projects/portfolio"
+        "id": 4,
+        "title": "National Celebration Hub",
+        "description": "An interactive, responsive platform for national events and celebrations that looks as good on a phone as it does on a desktop.",
+        "image": "/static/images/image9.svg",
+        "tags": ["Web App", "Interactive", "Responsive"],
+        "link": "/projects/national",
+        "live": false,
+        "live_link": "",
+        "category": "Responsive web app",
+        "tagline": "One celebration, every screen size.",
+        "goal": "National events draw people on every kind of device. This platform is built to look as good on a phone as it does on a desktop, with interactive elements that make the celebration feel participatory.",
+        "features": [
+            {"icon": "fa-mobile-alt", "title": "Responsive by design", "text": "The layout adapts from phone to desktop without losing its polish."},
+            {"icon": "fa-hand-pointer", "title": "Interactive elements", "text": "Visitors can engage with the celebration instead of only reading about it."},
+            {"icon": "fa-flag", "title": "Event focus", "text": "Built around national events and celebrations."}
+        ],
+        "stack": [
+            {"layer": "Application", "items": ["Web App"]},
+            {"layer": "Interface", "items": ["Interactive", "Responsive"]}
+        ],
+        "takeaways": [
+            "Designing interactions that work on touch screens and scale up to desktop.",
+            "Making one layout hold up across screen sizes."
+        ]
     },
     {
-        "id": 12,
-        "title": "Developer Portfolio Template",
-        "description": "Customizable portfolio template for tech professionals",
-        "image": "https://miro.medium.com/v2/resize:fit:1400/1*-hL6ZeXl_Kt0O-b82UQo9A.png",
-        "tags": ["Template", "Portfolio", "Responsive"],
-        "link": "/projects/portfolio"
+        "id": 3,
+        "title": "All In One Search Hub",
+        "description": "One starting point for the search engines you use every day. Open Google, Bing, Yahoo, DuckDuckGo and more from a single fast, simple interface instead of juggling separate sites.",
+        "image": "/static/images/image10.svg",
+        "tags": ["Full Stack", "API Integration", "CSS Animation"],
+        "link": "/projects/film",
+        "live": false,
+        "live_link": "",
+        "category": "Full-stack project",
+        "tagline": "Every search engine, one starting point.",
+        "goal": "Switching between search engines means juggling separate sites. This hub puts Google, Bing, Yahoo, DuckDuckGo and more behind one fast, simple interface.",
+        "flow": [
+            {"title": "Type", "text": "Enter a query once."},
+            {"title": "Pick", "text": "Choose which search engine should answer it."},
+            {"title": "Go", "text": "The hub passes the query on and opens that engine's results."}
+        ],
+        "features": [
+            {"icon": "fa-search", "title": "One search box", "text": "A single place to start, whichever engine you prefer."},
+            {"icon": "fa-th", "title": "Many engines", "text": "Google, Bing, Yahoo, DuckDuckGo and more are one click apart."},
+            {"icon": "fa-bolt", "title": "Fast and simple", "text": "A light interface that gets out of the way."},
+            {"icon": "fa-magic", "title": "CSS animation", "text": "Subtle motion makes the interface feel polished."}
+        ],
+        "stack": [
+            {"layer": "Application", "items": ["Full Stack"]},
+            {"layer": "Integration", "items": ["API Integration"]},
+            {"layer": "Styling", "items": ["CSS Animation"]}
+        ],
+        "takeaways": [
+            "Bringing several external services together behind one interface.",
+            "Using CSS animation for polish without slowing the page."
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Open Source Contributions",
+        "description": "A showcase of my open source work, including responsive templates and portfolio enhancements.",
+        "image": "/static/images/image11.svg",
+        "tags": ["Open Source", "Templates", "Responsive", "Portfolio"],
+        "link": "/projects/open-source",
+        "live": false,
+        "live_link": "",
+        "category": "Open source",
+        "tagline": "Small, useful contributions, shared in the open.",
+        "goal": "Open source works when people share what they build. This collection showcases my contributions, including responsive templates and portfolio enhancements that others can reuse.",
+        "flow": [
+            {"title": "Fork", "text": "Copy the project so it can be changed freely."},
+            {"title": "Change", "text": "Make the improvement, such as a responsive layout or a reusable template."},
+            {"title": "Propose", "text": "Open a pull request to suggest the change to the original project."},
+            {"title": "Merge", "text": "Once reviewed and accepted, the change becomes part of the project."}
+        ],
+        "features": [
+            {"icon": "fa-code-branch", "title": "Open collaboration", "text": "Work happens in public, alongside other contributors."},
+            {"icon": "fa-th-large", "title": "Reusable templates", "text": "Templates built so others can pick them up and adapt them."},
+            {"icon": "fa-mobile-alt", "title": "Responsive by default", "text": "Layouts that hold up from phone to desktop."},
+            {"icon": "fa-user", "title": "Portfolio enhancements", "text": "Improvements aimed at personal portfolio sites."}
+        ],
+        "stack": [
+            {"layer": "Practice", "items": ["Open Source"]},
+            {"layer": "Output", "items": ["Templates", "Portfolio"]},
+            {"layer": "Interface", "items": ["Responsive"]}
+        ],
+        "takeaways": [
+            "Working within other people's codebases and conventions.",
+            "Writing templates that others can pick up and reuse."
+        ]
+    },
+    {
+        "id": 1,
+        "title": "Basic Banking System",
+        "description": "A web banking app built with PHP and MySQL. View customers, check account details and transfer money between accounts, with transaction history, user management and live balance updates. A responsive Bootstrap interface makes it a practical introduction to CRUD operations and PHP backend integration.",
+        "image": "/static/images/image12.svg",
+        "tags": ["PHP", "MySQL", "Bootstrap"],
+        "link": "/projects/BBS",
+        "live": false,
+        "live_link": "",
+        "category": "Web app",
+        "tagline": "Customers, accounts and transfers in one tidy app.",
+        "goal": "Banking is a classic way to learn CRUD. This PHP and MySQL app lets you view customers, check account details and move money between accounts, with transaction history, user management and live balance updates behind a responsive Bootstrap interface.",
+        "flow": [
+            {"title": "View", "text": "Browse the list of customers."},
+            {"title": "Inspect", "text": "Open an account to see its details and history."},
+            {"title": "Transfer", "text": "Choose a recipient and send money between accounts."},
+            {"title": "Update", "text": "Balances change immediately and the transfer is added to the transaction history."}
+        ],
+        "features": [
+            {"icon": "fa-users", "title": "Customer list", "text": "Every customer in one clear, scannable view."},
+            {"icon": "fa-id-card", "title": "Account details", "text": "Check an account's information without leaving the app."},
+            {"icon": "fa-exchange-alt", "title": "Money transfers", "text": "Send money between accounts in a few steps."},
+            {"icon": "fa-history", "title": "Transaction history", "text": "Every transfer is recorded and can be looked back on."},
+            {"icon": "fa-users-cog", "title": "User management", "text": "Add and maintain the people the system serves."},
+            {"icon": "fa-sync-alt", "title": "Live balances", "text": "Balances update as soon as a transaction completes."}
+        ],
+        "stack": [
+            {"layer": "Interface", "items": ["Bootstrap"]},
+            {"layer": "Server", "items": ["PHP"]},
+            {"layer": "Data", "items": ["MySQL"]}
+        ],
+        "takeaways": [
+            "Practising CRUD operations end to end.",
+            "Keeping balances and history consistent when money moves."
+        ]
+    },
+    {
+        "id": 13,
+        "title": "More projects on the way",
+        "description": "New work is in progress and will appear here as soon as it is ready.",
+        "image": "/static/images/image13.svg",
+        "tags": [],
+        "link": "",
+        "live": false,
+        "live_link": ""
     }
 ]
