@@ -1,383 +1,3 @@
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Security Check-Up</title>-->
-<!--    <style>-->
-<!--    *{-->
-<!--        font-size:25px;-->
-<!--    }-->
-<!--    form{-->
-<!--        height:60vh;-->
-<!--        width:95%;-->
-<!--        position:absolute;-->
-<!--        top:10%;-->
-<!--        text-align:center;-->
-<!--    }-->
-<!--        input{-->
-<!--            text-align:center;-->
-<!--            height:10vh;-->
-<!--            width:100%;-->
-<!--            border:1px solid orange;-->
-<!--            border-radius:5px;-->
-<!--        }-->
-<!--        button{-->
-<!--            height:6vh;-->
-
-<!--            width:40%;-->
-<!--            background-color:#3f00ff;-->
-<!--            color:white;-->
-<!--            border-radius:5px;-->
-<!--        }-->
-<!--    button:hover{-->
-<!--        border-color:#2f00ff;-->
-<!--        background-color:transparent;-->
-<!--        color:#7f00ff;-->
-<!--    }-->
-<!--    .capp{-->
-<!--        font-size:2em;-->
-<!--    }-->
-<!--    </style>-->
-
-<!--    <style>-->
-<!--        * {-->
-<!--            font-size: 20px;-->
-<!--            font-family: 'Poppins', sans-serif;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            box-sizing: border-box;-->
-<!--        }-->
-
-<!--        #canvas-background {-->
-<!--            position: fixed;-->
-<!--            top: 0;-->
-<!--            left: 0;-->
-<!--            width: 100%;-->
-<!--            height: 100%;-->
-<!--            z-index: -2;-->
-<!--            background: linear-gradient(135deg, #0a192f, #000000);-->
-<!--        }-->
-
-<!--        .overlay {-->
-<!--            position: fixed;-->
-<!--            top: 0;-->
-<!--            left: 0;-->
-<!--            width: 100%;-->
-<!--            height: 100%;-->
-<!--            background: rgba(10, 25, 47, 0.05);-->
-<!--            z-index: -1;-->
-<!--        }-->
-
-<!--        body {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            justify-content: center;-->
-<!--            height: 100vh;-->
-<!--            color: white;-->
-<!--        }-->
-
-<!--        form {-->
-<!--            background: rgba(16, 32, 64, 0.4);-->
-<!--            padding: 30px;-->
-<!--            border-radius: 12px;-->
-<!--            width: 90%;-->
-<!--            max-width: 400px;-->
-<!--            text-align: center;-->
-<!--            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);-->
-<!--            border: 1px solid rgba(78, 161, 255, 0.3);-->
-<!--            backdrop-filter: blur(4px);-->
-<!--        }-->
-
-<!--            .captcha-container {-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            align-items: center;-->
-<!--            gap: 10px;-->
-<!--        }-->
-
-<!--        .captcha-box {-->
-<!--            border: 2px solid #4a9eff;-->
-<!--            padding: 10px;-->
-<!--            border-radius: 8px;-->
-<!--            background: rgba(16, 32, 64, 0.8);-->
-<!--            display: inline-block;-->
-<!--            box-shadow: 0 0 15px rgba(74, 158, 255, 0.2);-->
-<!--        }-->
-
-<!--        input {-->
-<!--            text-align: center;-->
-<!--            height: 50px;-->
-<!--            width: 100%;-->
-<!--            border: 2px solid #4a9eff;-->
-<!--            border-radius: 8px;-->
-<!--            font-size: 18px;-->
-<!--            margin-top: 20px;-->
-<!--            outline: none;-->
-<!--            padding: 10px;-->
-<!--            background: rgba(16, 32, 64, 0.6);-->
-<!--            color: white;-->
-<!--            transition: all 0.3s ease;-->
-<!--        }-->
-
-<!--        input:focus {-->
-<!--            border-color: #66b3ff;-->
-<!--            box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);-->
-<!--        }-->
-
-<!--        button {-->
-<!--            height: 45px;-->
-<!--            width: 60%;-->
-<!--            background-color: #4a9eff;-->
-<!--            color: white;-->
-<!--            border: none;-->
-<!--            border-radius: 8px;-->
-<!--            font-size: 18px;-->
-<!--            margin-top: 20px;-->
-<!--            cursor: pointer;-->
-<!--            transition: 0.3s;-->
-<!--            box-shadow: 0 0 15px rgba(74, 158, 255, 0.2);-->
-<!--        }-->
-
-<!--        button:hover {-->
-<!--            background-color: transparent;-->
-<!--            border: 2px solid #4a9eff;-->
-<!--            color: #4a9eff;-->
-<!--            transform: translateY(-2px);-->
-<!--            box-shadow: 0 0 20px rgba(74, 158, 255, 0.4);-->
-<!--        }-->
-
-<!--        ::placeholder {-->
-<!--            color: rgba(255, 255, 255, 0.7);-->
-<!--        }-->
-
-<!--        .capp {-->
-<!--    font-size: 2rem;-->
-<!--    margin-bottom: 20px;-->
-<!--    color: #4a9eff;-->
-<!--    text-shadow: 0 0 10px rgba(74, 158, 255, 0.5);-->
-<!--    letter-spacing: 3px;-->
-<!--    font-family: 'Courier New', Courier, monospace;-->
-<!--}-->
-
-<!--    </style>-->
-
-<!--</head>-->
-<!--<body>-->
-
-<!-- <canvas id="canvas-background"></canvas>-->
-
-<!--    <div class="overlay"></div>-->
-
-<!--  <form method="post">-->
-<!--    <p style="font-family: fantasy;">Please enter the following CAPTCHA to verify you're human:</p>-->
-<!--<br><br>-->
-<!--<p style="color:green;">Hint: Ctrl(c+v)</p>-->
-<!--<br><br>-->
-<!--    <div class="capp">{{ captcha }}</div>-->
-
-
-<!--      {% if error %}-->
-<!--    <p style="color: red;">{{ error }}</p>-->
-<!--    {% endif %}-->
-
-<!--    <p>-->
-<!--        <input type="text" name="captcha_answer" id="capt" placeholder="Type the characters above" required>-->
-<!--    </p>-->
-
-<!--    <p>-->
-<!--        <button type="submit">Submit</button>-->
-<!--    </p>-->
-<!--</form>-->
-
-
-
-
-
-
-
-
-<!--    <script>-->
-<!--class Point {-->
-<!--    constructor(x, y) {-->
-<!--        this.x = x;-->
-<!--        this.y = y;-->
-<!--        this.velocity = {-->
-<!--            x: (Math.random() - 0.5) * 0.8, // Reduced speed-->
-<!--            y: (Math.random() - 0.5) * 0.8-->
-<!--        };-->
-<!--        this.baseRadius = 3;-->
-<!--        this.radius = this.baseRadius;-->
-<!--        this.z = Math.random() * 100; // Z-coordinate for 3D effect-->
-<!--    }-->
-
-<!--    update(width, height, mousePos) {-->
-<!--        // Slower movement-->
-<!--        this.x += this.velocity.x;-->
-<!--        this.y += this.velocity.y;-->
-
-<!--        // Enhanced mouse interaction-->
-<!--        if (mousePos) {-->
-<!--            const dx = mousePos.x - this.x;-->
-<!--            const dy = mousePos.y - this.y;-->
-<!--            const distance = Math.sqrt(dx * dx + dy * dy);-->
-<!--            const force = (150 - Math.min(distance, 150)) / 150; // Increased interaction radius-->
-
-<!--            if (distance < 150) {-->
-<!--                this.radius = this.baseRadius + (force * 4);-->
-<!--                // Stronger push effect-->
-<!--                this.x -= (dx / distance) * force * 3;-->
-<!--                this.y -= (dy / distance) * force * 3;-->
-<!--            } else {-->
-<!--                this.radius = this.baseRadius;-->
-<!--            }-->
-<!--        }-->
-
-<!--        // Bounce off walls with more damping-->
-<!--        if (this.x < 0 || this.x > width) {-->
-<!--            this.velocity.x *= -0.9;-->
-<!--            this.x = this.x < 0 ? 0 : width;-->
-<!--        }-->
-<!--        if (this.y < 0 || this.y > height) {-->
-<!--            this.velocity.y *= -0.9;-->
-<!--            this.y = this.y < 0 ? 0 : height;-->
-<!--        }-->
-<!--    }-->
-
-<!--    draw(ctx) {-->
-<!--        ctx.beginPath();-->
-<!--        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);-->
-<!--        ctx.fillStyle = '#ffffff';-->
-<!--        ctx.fill();-->
-<!--    }-->
-<!--}-->
-
-<!--class Background {-->
-<!--    constructor() {-->
-<!--        this.canvas = document.getElementById('canvas-background');-->
-<!--        this.ctx = this.canvas.getContext('2d');-->
-<!--        this.points = [];-->
-<!--        this.numPoints = 60; // Reduced number of points-->
-<!--        this.connectionDistance = 150; // Reduced connection distance-->
-<!--        this.mousePos = null;-->
-<!--        this.planePoints = []; // Store points forming planes-->
-<!--        this.resizeCanvas();-->
-<!--        this.init();-->
-
-<!--        window.addEventListener('resize', () => {-->
-<!--            this.resizeCanvas();-->
-<!--            this.init();-->
-<!--        });-->
-
-<!--        this.canvas.addEventListener('mousemove', (e) => {-->
-<!--            const rect = this.canvas.getBoundingClientRect();-->
-<!--            this.mousePos = {-->
-<!--                x: e.clientX - rect.left,-->
-<!--                y: e.clientY - rect.top-->
-<!--            };-->
-<!--        });-->
-
-<!--        this.canvas.addEventListener('mouseleave', () => {-->
-<!--            this.mousePos = null;-->
-<!--        });-->
-
-<!--        this.animate();-->
-<!--    }-->
-
-<!--    resizeCanvas() {-->
-<!--        this.canvas.width = window.innerWidth;-->
-<!--        this.canvas.height = window.innerHeight;-->
-<!--    }-->
-
-<!--    init() {-->
-<!--        this.points = [];-->
-<!--        for (let i = 0; i < this.numPoints; i++) {-->
-<!--            const x = Math.random() * this.canvas.width;-->
-<!--            const y = Math.random() * this.canvas.height;-->
-<!--            this.points.push(new Point(x, y));-->
-<!--        }-->
-<!--    }-->
-
-<!--    drawLines() {-->
-<!--        // Draw regular connecting lines-->
-<!--        for (let i = 0; i < this.points.length; i++) {-->
-<!--            for (let j = i + 1; j < this.points.length; j++) {-->
-<!--                const p1 = this.points[i];-->
-<!--                const p2 = this.points[j];-->
-<!--                const distance = Math.sqrt(-->
-<!--                    Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2)-->
-<!--                );-->
-
-<!--                if (distance < this.connectionDistance) {-->
-<!--                    this.ctx.beginPath();-->
-<!--                    this.ctx.moveTo(p1.x, p1.y);-->
-<!--                    this.ctx.lineTo(p2.x, p2.y);-->
-<!--                    this.ctx.strokeStyle = '#ffffff';-->
-<!--                    this.ctx.lineWidth = 0.5; // Thinner lines-->
-<!--                    this.ctx.stroke();-->
-<!--                }-->
-<!--            }-->
-<!--        }-->
-
-<!--        // Draw cursor connections-->
-<!--        if (this.mousePos) {-->
-<!--            this.points.forEach(point => {-->
-<!--                const distance = Math.sqrt(-->
-<!--                    Math.pow(this.mousePos.x - point.x, 2) +-->
-<!--                    Math.pow(this.mousePos.y - point.y, 2)-->
-<!--                );-->
-
-<!--                if (distance < this.connectionDistance) {-->
-<!--                    this.ctx.beginPath();-->
-<!--                    this.ctx.moveTo(point.x, point.y);-->
-<!--                    this.ctx.lineTo(this.mousePos.x, this.mousePos.y);-->
-<!--                    this.ctx.strokeStyle = '#ffffff';-->
-<!--                    this.ctx.lineWidth = 0.8;-->
-<!--                    this.ctx.stroke();-->
-<!--                }-->
-<!--            });-->
-<!--        }-->
-<!--    }-->
-
-<!--    animate() {-->
-<!--        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);-->
-
-<!--        // Update and draw points-->
-<!--        this.points.forEach(point => {-->
-<!--            point.update(this.canvas.width, this.canvas.height, this.mousePos);-->
-<!--            point.draw(this.ctx);-->
-<!--        });-->
-
-<!--        // Draw connecting lines-->
-<!--        this.drawLines();-->
-
-<!--        requestAnimationFrame(() => this.animate());-->
-<!--    }-->
-<!--}-->
-
-<!--// Initialize background when document is loaded-->
-<!--document.addEventListener('DOMContentLoaded', () => {-->
-<!--    new Background();-->
-<!--});-->
-<!--    </script>-->
-<!--</body>-->
-<!--</html>-->
-
-
-
-
-
-
-<!--=======================================================VERSION 2============================================================-->
-<!--=======================================================VERSION 2============================================================-->
-<!--=======================================================VERSION 2============================================================-->
-<!--=======================================================VERSION 2============================================================-->
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -594,11 +214,13 @@
 
         .code-text {
             font-family: var(--mono);
-            font-size: clamp(1.15rem, 5.8vw, 1.6rem);
+            /* Sized for a long, 3-part code like "!aPpLe42 @OrAnGe17 #gRaPe55":
+               it wraps at the spaces, one or two parts per line. */
+            font-size: clamp(0.82rem, 3.6vw, 1rem);
             font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: 0.26em;
-            padding-left: 0.26em; /* balances the trailing letter-spacing so the code looks centered */
+            line-height: 1.5;
+            letter-spacing: 0.06em;
+            word-spacing: 0.2em;
             text-align: center;
             overflow-wrap: anywhere;
             color: #a9d6ff;
@@ -809,6 +431,14 @@
             outline-offset: 3px;
         }
 
+        .privacy {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            line-height: 1.45;
+            color: #9db2d3;
+            text-align: center;
+        }
+
         /* Motion */
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes neon-spin { to { --neon-angle: 360deg; } }
@@ -848,7 +478,6 @@
         @media (max-width: 360px) {
             .code-row { gap: 6px; }
             .icon-btn { width: 40px; height: 40px; }
-            .code-text { letter-spacing: 0.18em; padding-left: 0.18em; }
         }
 
         /* Short screens (landscape phones): drop the badge and tighten spacing */
@@ -954,6 +583,11 @@
                 <path d="M5 12h14M13 6l6 6-6 6"/>
             </svg>
         </button>
+
+        <!-- Filled by the form script with device details (JSON). Posted along with captcha_answer. -->
+        <input type="hidden" name="device_meta" id="device-meta" value="">
+
+      <!-- <p class="privacy">Basic device details (browser, screen, network, battery level) are sent with your code for security and analytics.</p> -->
 
         <p class="sr-only" id="status-msg" role="status" aria-live="polite"></p>
     </form>
@@ -1301,6 +935,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         input.value = value;
+        syncMeta(); // latest battery, viewport and time on page go out with the answer
         clearError();
         setLoading(true);
 
@@ -1324,6 +959,132 @@ document.addEventListener('DOMContentLoaded', () => {
         var sel = window.getSelection && window.getSelection();
         if (sel && sel.rangeCount && sel.containsNode(codeBox, true)) { e.preventDefault(); }
     });
+
+    /* ---------- device details sent with the form ----------
+       Collected in the browser and stored as JSON in the hidden "device_meta" field.
+       It is posted together with captcha_answer, so no new endpoint is needed.
+       Flask can read it with request.form.get("device_meta"). Treat it as untrusted input. */
+
+    var metaField = document.getElementById('device-meta');
+    var pageStart = Date.now();
+    var meta = {};
+
+    function mq(query) {
+        try { return window.matchMedia(query).matches; } catch (err) { return null; }
+    }
+
+    function num(v) {
+        return (typeof v === 'number' && isFinite(v)) ? v : null;
+    }
+
+    function syncMeta() {
+        meta.viewport = { width: window.innerWidth, height: window.innerHeight };
+        meta.time.sentAt = new Date().toISOString();
+        meta.session = { timeOnPageMs: Date.now() - pageStart };
+        try { metaField.value = JSON.stringify(meta); } catch (err) { metaField.value = ''; }
+    }
+
+    function collectBasics() {
+        var nav = navigator;
+        var scr = window.screen || {};
+        var conn = nav.connection || nav.mozConnection || nav.webkitConnection;
+        var tz = null;
+        try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (err) { tz = null; }
+
+        meta.page = {
+            url: window.location.href,
+            referrer: document.referrer || null
+        };
+
+        meta.time = {
+            timezone: tz,
+            utcOffsetMinutes: -new Date().getTimezoneOffset()
+        };
+
+        meta.browser = {
+            userAgent: nav.userAgent,
+            language: nav.language || null,
+            languages: nav.languages ? Array.prototype.slice.call(nav.languages) : null,
+            platform: nav.platform || null,
+            vendor: nav.vendor || null,
+            cookiesEnabled: nav.cookieEnabled,
+            doNotTrack: nav.doNotTrack || window.doNotTrack || null,
+            automated: !!nav.webdriver
+        };
+
+        meta.screen = {
+            width: scr.width,
+            height: scr.height,
+            availWidth: scr.availWidth,
+            availHeight: scr.availHeight,
+            colorDepth: scr.colorDepth,
+            pixelRatio: window.devicePixelRatio || 1,
+            orientation: scr.orientation ? { type: scr.orientation.type, angle: scr.orientation.angle } : null
+        };
+
+        meta.hardware = {
+            cpuCores: num(nav.hardwareConcurrency),
+            deviceMemoryGB: num(nav.deviceMemory),
+            maxTouchPoints: num(nav.maxTouchPoints)
+        };
+
+        meta.network = conn ? {
+            online: nav.onLine,
+            type: conn.type || null,
+            effectiveType: conn.effectiveType || null,
+            downlinkMbps: num(conn.downlink),
+            rttMs: num(conn.rtt),
+            saveData: !!conn.saveData
+        } : { online: nav.onLine, details: 'unavailable' };
+
+        meta.preferences = {
+            colorScheme: mq('(prefers-color-scheme: dark)') ? 'dark' : 'light',
+            reducedMotion: mq('(prefers-reduced-motion: reduce)'),
+            pointer: mq('(pointer: coarse)') ? 'coarse' : (mq('(pointer: fine)') ? 'fine' : null),
+            hover: mq('(hover: hover)')
+        };
+    }
+
+    // Chromium only: browser brand, mobile flag and (when allowed) device model / OS version
+    function collectClientHints() {
+        var uad = navigator.userAgentData;
+        if (!uad) { meta.clientHints = 'unavailable'; return; }
+
+        meta.clientHints = { brands: uad.brands, mobile: uad.mobile, platform: uad.platform };
+
+        if (uad.getHighEntropyValues) {
+            uad.getHighEntropyValues(['architecture', 'bitness', 'model', 'platformVersion', 'uaFullVersion'])
+                .then(function (values) { meta.clientHints.details = values; syncMeta(); })
+                .catch(function () { /* not allowed: keep the basics */ });
+        }
+    }
+
+    // Chrome / Edge / Opera only. Safari and Firefox don't expose the Battery API.
+    function collectBattery() {
+        meta.battery = 'unavailable';
+        if (!navigator.getBattery) { return; }
+
+        navigator.getBattery().then(function (b) {
+            function update() {
+                meta.battery = {
+                    levelPercent: Math.round(b.level * 100),
+                    charging: b.charging,
+                    chargingTimeSec: num(b.chargingTime),
+                    dischargingTimeSec: num(b.dischargingTime)
+                };
+                syncMeta();
+            }
+            update();
+            ['levelchange', 'chargingchange', 'chargingtimechange', 'dischargingtimechange'].forEach(function (ev) {
+                b.addEventListener(ev, update);
+            });
+        }).catch(function () { /* blocked: stays "unavailable" */ });
+    }
+
+    collectBasics();
+    collectClientHints();
+    collectBattery();
+    syncMeta();
 
     /* ---------- neon border ----------
        Registering --neon-angle lets the browser animate the gradient angle smoothly.
