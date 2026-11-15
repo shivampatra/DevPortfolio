@@ -13,6 +13,7 @@
  *   initFooter        year, "show more" social links
  *   initContactForm   validation messages + sending state
  *   initProjects      staggered reveal, pointer tilt, tag filters (FLIP)
+ *   initProjectDetail reading progress, table-of-contents highlight, flow connectors
  */
 (() => {
   'use strict';
@@ -635,10 +636,76 @@
   }
 
 
+  /* --------------------------------------------------------- Project detail */
+  function initProjectDetail() {
+    const page = $('[data-project-detail]');
+    if (!page) return;
+
+    // 1. Reading progress (thin bar at the very top of the viewport)
+    const bar = $('.pd-progress', page);
+    if (bar) {
+      let ticking = false;
+      const update = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        bar.style.setProperty('--pd-progress', ratio.toFixed(4));
+        ticking = false;
+      };
+      window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+      update();
+    }
+
+    if (!('IntersectionObserver' in window)) return;
+
+    // 2. Table of contents: highlight the section being read
+    const links = $$('.pd-toc a', page);
+    const targets = links
+      .map((link) => ({ link, section: document.getElementById(link.hash.slice(1)) }))
+      .filter((item) => item.section);
+
+    if (targets.length) {
+      const setActive = (id) => {
+        targets.forEach(({ link, section }) => {
+          const on = section.id === id;
+          link.classList.toggle('is-active', on);
+          if (on) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+      };
+
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      }, { rootMargin: '-20% 0px -65% 0px' });
+
+      targets.forEach(({ section }) => spy.observe(section));
+      setActive(targets[0].section.id);
+    }
+
+    // 3. "How it works": connectors draw in once as the steps scroll into view
+    const flow = $('.pd-flow', page);
+    if (flow && !reduceMotion.matches) {
+      flow.classList.add('is-enhanced');
+      const drawer = new IntersectionObserver((entries, observer) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        flow.classList.add('is-in');
+        observer.disconnect();
+      }, { threshold: 0.3 });
+      drawer.observe(flow);
+    }
+  }
+
+
   /* ------------------------------------------------------------------ Start */
   const modules = [
     initTheme, initPreloader, initScrollState, initNav,
-    initReveal, initFooter, initContactForm, initProjects,
+    initReveal, initFooter, initContactForm, initProjects, initProjectDetail,
   ];
 
   const start = () => {
