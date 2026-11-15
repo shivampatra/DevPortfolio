@@ -1,76 +1,229 @@
 <!-- templates/project_detail.html -->
+{#
+   Data comes from projects.json. Besides the card fields, each project can carry:
+     category, tagline, goal, flow[], features[], stack[], takeaways[]
+   Every section is optional: if a project has no data for it, the section (and its
+   table-of-contents entry) simply isn't rendered, so there is never placeholder text.
+
+   Optional context from the route: prev_project, next_project (see the snippet in the
+   notes). Without them the pager is hidden instead of showing dead "#" buttons.
+#}
 {% extends 'base.html' %}
 
 {% block title %}{{ project.title }} | Portfolio{% endblock %}
 
 {% block content %}
-<section class="project-detail-hero">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url_for('index') }}#projects">Projects</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ project.title }}</li>
-                    </ol>
-                </nav>
-                
-                <h1 class="project-title mb-4">{{ project.title }}</h1>
-                
-                <div class="project-tags mb-4">
-                    {% for tag in project.tags %}
-                    <span class="badge">{{ tag }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% set home = url_for('index') %}
+{% set is_live = project.live and project.live_link %}
 
-<section class="project-content py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="project-image-full mb-5">
-                    <img src="{{ project.image }}" class="img-fluid" alt="{{ project.title }}">
-                </div>
-                
-                <div class="project-description mb-5">
-                    <h2 class="mb-4">Project Overview</h2>
-                    <p class="lead">{{ project.description }}</p>
-                    <p>This is a placeholder for the full project description. In a real application, this would contain detailed information about the project, its goals, challenges, solutions, and outcomes.</p>
-                    
-                    <h3 class="mt-5 mb-3">Technologies Used</h3>
-                    <ul class="tech-list">
-                        {% for tag in project.tags %}
-                        <li>{{ tag }}</li>
-                        {% endfor %}
-                        <li>Additional technologies would be listed here</li>
+{# Table of contents: only sections that have content #}
+{% set toc = [('overview', 'Overview')] %}
+{% if project.flow %}{% set toc = toc + [('how-it-works', 'How it works')] %}{% endif %}
+{% if project.features %}{% set toc = toc + [('features', 'Features')] %}{% endif %}
+{% set toc = toc + [('stack', 'Tech stack')] %}
+{% if project.takeaways %}{% set toc = toc + [('takeaways', 'What it shows')] %}{% endif %}
+
+<div data-project-detail>
+    <div class="pd-progress" aria-hidden="true"><span></span></div>
+
+    <!-- ===== Hero ===== -->
+    <header class="pd-hero">
+        <div class="container">
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb pd-crumbs">
+                    <li class="breadcrumb-item"><a href="{{ home }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ home }}#projects">Projects</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ project.title }}</li>
+                </ol>
+            </nav>
+
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 pd-hero-copy">
+                    <div class="pd-meta-line" style="--i:0">
+                        <span>{{ project.category or 'Project' }}</span>
+                        {% if is_live %}
+                        <span class="pd-status is-live"><span class="pd-dot" aria-hidden="true"></span>Live demo available</span>
+                        {% else %}
+                        <span class="pd-status">Case study</span>
+                        {% endif %}
+                    </div>
+
+                    <h1 class="pd-title" style="--i:1">{{ project.title }}</h1>
+
+                    {% if project.tagline %}
+                    <p class="pd-tagline" style="--i:2">{{ project.tagline }}</p>
+                    {% endif %}
+
+                    <div class="pd-actions" style="--i:3">
+                        {% if is_live %}
+                        <a class="btn btn-primary btn-lg" href="{{ project.live_link }}" target="_blank" rel="noopener noreferrer">
+                            <i class="fas fa-external-link-alt me-2" aria-hidden="true"></i>Open live demo<span class="visually-hidden"> (opens in a new tab)</span>
+                        </a>
+                        {% else %}
+                        <a class="btn btn-primary btn-lg" href="{{ home }}#contact">
+                            <i class="fas fa-envelope me-2" aria-hidden="true"></i>Get in touch
+                        </a>
+                        {% endif %}
+                        <a class="btn btn-ghost btn-lg" href="{{ home }}#projects">
+                            <i class="fas fa-th-large me-2" aria-hidden="true"></i>All projects
+                        </a>
+                    </div>
+
+                    {% if project.tags %}
+                    <ul class="pd-tags" style="--i:4" aria-label="Technologies">
+                        {% for tag in project.tags %}<li>{{ tag }}</li>{% endfor %}
                     </ul>
-                    
-                    <h3 class="mt-5 mb-3">Key Features</h3>
-                    <ul>
-                        <li>Feature 1 details</li>
-                        <li>Feature 2 details</li>
-                        <li>Feature 3 details</li>
-                        <li>Feature 4 details</li>
-                    </ul>
-                    
-                    <h3 class="mt-5 mb-3">Results</h3>
-                    <p>Information about project outcomes, metrics, and achievements would go here.</p>
+                    {% endif %}
                 </div>
-                
-                <div class="project-navigation d-flex justify-content-between">
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-arrow-left me-2"></i>Previous Project
-                    </a>
-                    <a href="#" class="btn btn-outline-primary">
-                        Next Project<i class="fas fa-arrow-right ms-2"></i>
-                    </a>
+
+                <div class="col-lg-6">
+                    <figure class="pd-frame">
+                        <img src="{{ project.image }}" alt="Illustration for {{ project.title }}" width="1600" height="1000" decoding="async">
+                    </figure>
+                </div>
+            </div>
+
+            <dl class="pd-facts">
+                <div><dt>Project type</dt><dd>{{ project.category or 'Project' }}</dd></div>
+                {% if project.tags %}
+                <div><dt>Built with</dt><dd>{{ project.tags[:3] | join(', ') }}</dd></div>
+                {% endif %}
+                <div><dt>Status</dt><dd>{{ 'Live demo available' if is_live else 'Case study' }}</dd></div>
+            </dl>
+        </div>
+    </header>
+
+    <!-- ===== Body ===== -->
+    <div class="pd-body">
+        <div class="container">
+            <div class="row g-5">
+
+                <aside class="col-lg-3">
+                    <nav class="pd-toc" aria-label="On this page">
+                        <ul>
+                            {% for id, label in toc %}
+                            <li><a href="#{{ id }}">{{ label }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </aside>
+
+                <div class="col-lg-9">
+
+                    <section id="overview" class="pd-section" aria-labelledby="overview-title">
+                        <h2 id="overview-title">Overview</h2>
+                        <p class="pd-lead">{{ project.description }}</p>
+                        {% if project.goal %}
+                        <p class="pd-text">{{ project.goal }}</p>
+                        {% endif %}
+                    </section>
+
+                    {% if project.flow %}
+                    <section id="how-it-works" class="pd-section" aria-labelledby="flow-title">
+                        <h2 id="flow-title">How it works</h2>
+                        <ol class="pd-flow" style="--steps:{{ project.flow | length }}">
+                            {% for step in project.flow %}
+                            <li class="pd-flow-step" style="--k:{{ loop.index0 }}">
+                                <h3>{{ step.title }}</h3>
+                                <p>{{ step.text }}</p>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                    </section>
+                    {% endif %}
+
+                    {% if project.features %}
+                    <section id="features" class="pd-section" aria-labelledby="features-title">
+                        <h2 id="features-title">Features</h2>
+                        <div class="pd-features">
+                            {% for f in project.features %}
+                            <article class="pd-feature">
+                                <span class="pd-feature-icon" aria-hidden="true"><i class="fas {{ f.icon or 'fa-check' }}"></i></span>
+                                <h3>{{ f.title }}</h3>
+                                <p>{{ f.text }}</p>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </section>
+                    {% endif %}
+
+                    <section id="stack" class="pd-section" aria-labelledby="stack-title">
+                        <h2 id="stack-title">Tech stack</h2>
+                        {% if project.stack %}
+                        <div class="pd-stack">
+                            {% for row in project.stack %}
+                            <div class="pd-stack-row">
+                                <h3 class="pd-stack-layer">{{ row.layer }}</h3>
+                                <ul class="pd-chips">
+                                    {% for item in row['items'] %}<li class="pd-chip">{{ item }}</li>{% endfor %}
+                                </ul>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <ul class="pd-chips">
+                            {% for tag in project.tags %}<li class="pd-chip">{{ tag }}</li>{% endfor %}
+                        </ul>
+                        {% endif %}
+                    </section>
+
+                    {% if project.takeaways %}
+                    <section id="takeaways" class="pd-section" aria-labelledby="takeaways-title">
+                        <h2 id="takeaways-title">What it shows</h2>
+                        <ul class="pd-takeaways">
+                            {% for t in project.takeaways %}<li>{{ t }}</li>{% endfor %}
+                        </ul>
+                    </section>
+                    {% endif %}
+
+                    <!-- Call to action -->
+                    <aside class="pd-cta" aria-label="Next step">
+                        <div>
+                            {% if is_live %}
+                            <h2>See it in action</h2>
+                            <p>{{ project.title }} is live, so you can try it yourself.</p>
+                            {% else %}
+                            <h2>Want to know more?</h2>
+                            <p>I'm happy to walk through how this was built, or talk about something similar.</p>
+                            {% endif %}
+                        </div>
+                        {% if is_live %}
+                        <a class="btn btn-primary btn-lg" href="{{ project.live_link }}" target="_blank" rel="noopener noreferrer">
+                            Open live demo<span class="visually-hidden"> (opens in a new tab)</span>
+                        </a>
+                        {% else %}
+                        <a class="btn btn-primary btn-lg" href="{{ home }}#contact">Get in touch</a>
+                        {% endif %}
+                    </aside>
+
+                    <!-- Previous / next -->
+                    {% if prev_project or next_project %}
+                    <nav class="pd-pager" aria-label="More projects">
+                        {% if prev_project %}
+                        <a class="pd-pager-card pd-prev" href="{{ prev_project.link }}" rel="prev">
+                            <img src="{{ prev_project.image }}" alt="" width="104" height="65" loading="lazy" decoding="async">
+                            <span>
+                                <span class="pd-pager-dir"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i>Previous project</span>
+                                <strong>{{ prev_project.title }}</strong>
+                            </span>
+                        </a>
+                        {% else %}<span></span>{% endif %}
+
+                        {% if next_project %}
+                        <a class="pd-pager-card pd-next" href="{{ next_project.link }}" rel="next">
+                            <img src="{{ next_project.image }}" alt="" width="104" height="65" loading="lazy" decoding="async">
+                            <span>
+                                <span class="pd-pager-dir">Next project<i class="fas fa-arrow-right ms-1" aria-hidden="true"></i></span>
+                                <strong>{{ next_project.title }}</strong>
+                            </span>
+                        </a>
+                        {% else %}<span></span>{% endif %}
+                    </nav>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}
