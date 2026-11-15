@@ -1,1 +1,1364 @@
 
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Security Check-Up</title>-->
+<!--    <style>-->
+<!--    *{-->
+<!--        font-size:25px;-->
+<!--    }-->
+<!--    form{-->
+<!--        height:60vh;-->
+<!--        width:95%;-->
+<!--        position:absolute;-->
+<!--        top:10%;-->
+<!--        text-align:center;-->
+<!--    }-->
+<!--        input{-->
+<!--            text-align:center;-->
+<!--            height:10vh;-->
+<!--            width:100%;-->
+<!--            border:1px solid orange;-->
+<!--            border-radius:5px;-->
+<!--        }-->
+<!--        button{-->
+<!--            height:6vh;-->
+
+<!--            width:40%;-->
+<!--            background-color:#3f00ff;-->
+<!--            color:white;-->
+<!--            border-radius:5px;-->
+<!--        }-->
+<!--    button:hover{-->
+<!--        border-color:#2f00ff;-->
+<!--        background-color:transparent;-->
+<!--        color:#7f00ff;-->
+<!--    }-->
+<!--    .capp{-->
+<!--        font-size:2em;-->
+<!--    }-->
+<!--    </style>-->
+
+<!--    <style>-->
+<!--        * {-->
+<!--            font-size: 20px;-->
+<!--            font-family: 'Poppins', sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        #canvas-background {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            z-index: -2;-->
+<!--            background: linear-gradient(135deg, #0a192f, #000000);-->
+<!--        }-->
+
+<!--        .overlay {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background: rgba(10, 25, 47, 0.05);-->
+<!--            z-index: -1;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            height: 100vh;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        form {-->
+<!--            background: rgba(16, 32, 64, 0.4);-->
+<!--            padding: 30px;-->
+<!--            border-radius: 12px;-->
+<!--            width: 90%;-->
+<!--            max-width: 400px;-->
+<!--            text-align: center;-->
+<!--            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);-->
+<!--            border: 1px solid rgba(78, 161, 255, 0.3);-->
+<!--            backdrop-filter: blur(4px);-->
+<!--        }-->
+
+<!--            .captcha-container {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .captcha-box {-->
+<!--            border: 2px solid #4a9eff;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 8px;-->
+<!--            background: rgba(16, 32, 64, 0.8);-->
+<!--            display: inline-block;-->
+<!--            box-shadow: 0 0 15px rgba(74, 158, 255, 0.2);-->
+<!--        }-->
+
+<!--        input {-->
+<!--            text-align: center;-->
+<!--            height: 50px;-->
+<!--            width: 100%;-->
+<!--            border: 2px solid #4a9eff;-->
+<!--            border-radius: 8px;-->
+<!--            font-size: 18px;-->
+<!--            margin-top: 20px;-->
+<!--            outline: none;-->
+<!--            padding: 10px;-->
+<!--            background: rgba(16, 32, 64, 0.6);-->
+<!--            color: white;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        input:focus {-->
+<!--            border-color: #66b3ff;-->
+<!--            box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);-->
+<!--        }-->
+
+<!--        button {-->
+<!--            height: 45px;-->
+<!--            width: 60%;-->
+<!--            background-color: #4a9eff;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            border-radius: 8px;-->
+<!--            font-size: 18px;-->
+<!--            margin-top: 20px;-->
+<!--            cursor: pointer;-->
+<!--            transition: 0.3s;-->
+<!--            box-shadow: 0 0 15px rgba(74, 158, 255, 0.2);-->
+<!--        }-->
+
+<!--        button:hover {-->
+<!--            background-color: transparent;-->
+<!--            border: 2px solid #4a9eff;-->
+<!--            color: #4a9eff;-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 0 20px rgba(74, 158, 255, 0.4);-->
+<!--        }-->
+
+<!--        ::placeholder {-->
+<!--            color: rgba(255, 255, 255, 0.7);-->
+<!--        }-->
+
+<!--        .capp {-->
+<!--    font-size: 2rem;-->
+<!--    margin-bottom: 20px;-->
+<!--    color: #4a9eff;-->
+<!--    text-shadow: 0 0 10px rgba(74, 158, 255, 0.5);-->
+<!--    letter-spacing: 3px;-->
+<!--    font-family: 'Courier New', Courier, monospace;-->
+<!--}-->
+
+<!--    </style>-->
+
+<!--</head>-->
+<!--<body>-->
+
+<!-- <canvas id="canvas-background"></canvas>-->
+
+<!--    <div class="overlay"></div>-->
+
+<!--  <form method="post">-->
+<!--    <p style="font-family: fantasy;">Please enter the following CAPTCHA to verify you're human:</p>-->
+<!--<br><br>-->
+<!--<p style="color:green;">Hint: Ctrl(c+v)</p>-->
+<!--<br><br>-->
+<!--    <div class="capp">{{ captcha }}</div>-->
+
+
+<!--      {% if error %}-->
+<!--    <p style="color: red;">{{ error }}</p>-->
+<!--    {% endif %}-->
+
+<!--    <p>-->
+<!--        <input type="text" name="captcha_answer" id="capt" placeholder="Type the characters above" required>-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--        <button type="submit">Submit</button>-->
+<!--    </p>-->
+<!--</form>-->
+
+
+
+
+
+
+
+
+<!--    <script>-->
+<!--class Point {-->
+<!--    constructor(x, y) {-->
+<!--        this.x = x;-->
+<!--        this.y = y;-->
+<!--        this.velocity = {-->
+<!--            x: (Math.random() - 0.5) * 0.8, // Reduced speed-->
+<!--            y: (Math.random() - 0.5) * 0.8-->
+<!--        };-->
+<!--        this.baseRadius = 3;-->
+<!--        this.radius = this.baseRadius;-->
+<!--        this.z = Math.random() * 100; // Z-coordinate for 3D effect-->
+<!--    }-->
+
+<!--    update(width, height, mousePos) {-->
+<!--        // Slower movement-->
+<!--        this.x += this.velocity.x;-->
+<!--        this.y += this.velocity.y;-->
+
+<!--        // Enhanced mouse interaction-->
+<!--        if (mousePos) {-->
+<!--            const dx = mousePos.x - this.x;-->
+<!--            const dy = mousePos.y - this.y;-->
+<!--            const distance = Math.sqrt(dx * dx + dy * dy);-->
+<!--            const force = (150 - Math.min(distance, 150)) / 150; // Increased interaction radius-->
+
+<!--            if (distance < 150) {-->
+<!--                this.radius = this.baseRadius + (force * 4);-->
+<!--                // Stronger push effect-->
+<!--                this.x -= (dx / distance) * force * 3;-->
+<!--                this.y -= (dy / distance) * force * 3;-->
+<!--            } else {-->
+<!--                this.radius = this.baseRadius;-->
+<!--            }-->
+<!--        }-->
+
+<!--        // Bounce off walls with more damping-->
+<!--        if (this.x < 0 || this.x > width) {-->
+<!--            this.velocity.x *= -0.9;-->
+<!--            this.x = this.x < 0 ? 0 : width;-->
+<!--        }-->
+<!--        if (this.y < 0 || this.y > height) {-->
+<!--            this.velocity.y *= -0.9;-->
+<!--            this.y = this.y < 0 ? 0 : height;-->
+<!--        }-->
+<!--    }-->
+
+<!--    draw(ctx) {-->
+<!--        ctx.beginPath();-->
+<!--        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);-->
+<!--        ctx.fillStyle = '#ffffff';-->
+<!--        ctx.fill();-->
+<!--    }-->
+<!--}-->
+
+<!--class Background {-->
+<!--    constructor() {-->
+<!--        this.canvas = document.getElementById('canvas-background');-->
+<!--        this.ctx = this.canvas.getContext('2d');-->
+<!--        this.points = [];-->
+<!--        this.numPoints = 60; // Reduced number of points-->
+<!--        this.connectionDistance = 150; // Reduced connection distance-->
+<!--        this.mousePos = null;-->
+<!--        this.planePoints = []; // Store points forming planes-->
+<!--        this.resizeCanvas();-->
+<!--        this.init();-->
+
+<!--        window.addEventListener('resize', () => {-->
+<!--            this.resizeCanvas();-->
+<!--            this.init();-->
+<!--        });-->
+
+<!--        this.canvas.addEventListener('mousemove', (e) => {-->
+<!--            const rect = this.canvas.getBoundingClientRect();-->
+<!--            this.mousePos = {-->
+<!--                x: e.clientX - rect.left,-->
+<!--                y: e.clientY - rect.top-->
+<!--            };-->
+<!--        });-->
+
+<!--        this.canvas.addEventListener('mouseleave', () => {-->
+<!--            this.mousePos = null;-->
+<!--        });-->
+
+<!--        this.animate();-->
+<!--    }-->
+
+<!--    resizeCanvas() {-->
+<!--        this.canvas.width = window.innerWidth;-->
+<!--        this.canvas.height = window.innerHeight;-->
+<!--    }-->
+
+<!--    init() {-->
+<!--        this.points = [];-->
+<!--        for (let i = 0; i < this.numPoints; i++) {-->
+<!--            const x = Math.random() * this.canvas.width;-->
+<!--            const y = Math.random() * this.canvas.height;-->
+<!--            this.points.push(new Point(x, y));-->
+<!--        }-->
+<!--    }-->
+
+<!--    drawLines() {-->
+<!--        // Draw regular connecting lines-->
+<!--        for (let i = 0; i < this.points.length; i++) {-->
+<!--            for (let j = i + 1; j < this.points.length; j++) {-->
+<!--                const p1 = this.points[i];-->
+<!--                const p2 = this.points[j];-->
+<!--                const distance = Math.sqrt(-->
+<!--                    Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2)-->
+<!--                );-->
+
+<!--                if (distance < this.connectionDistance) {-->
+<!--                    this.ctx.beginPath();-->
+<!--                    this.ctx.moveTo(p1.x, p1.y);-->
+<!--                    this.ctx.lineTo(p2.x, p2.y);-->
+<!--                    this.ctx.strokeStyle = '#ffffff';-->
+<!--                    this.ctx.lineWidth = 0.5; // Thinner lines-->
+<!--                    this.ctx.stroke();-->
+<!--                }-->
+<!--            }-->
+<!--        }-->
+
+<!--        // Draw cursor connections-->
+<!--        if (this.mousePos) {-->
+<!--            this.points.forEach(point => {-->
+<!--                const distance = Math.sqrt(-->
+<!--                    Math.pow(this.mousePos.x - point.x, 2) +-->
+<!--                    Math.pow(this.mousePos.y - point.y, 2)-->
+<!--                );-->
+
+<!--                if (distance < this.connectionDistance) {-->
+<!--                    this.ctx.beginPath();-->
+<!--                    this.ctx.moveTo(point.x, point.y);-->
+<!--                    this.ctx.lineTo(this.mousePos.x, this.mousePos.y);-->
+<!--                    this.ctx.strokeStyle = '#ffffff';-->
+<!--                    this.ctx.lineWidth = 0.8;-->
+<!--                    this.ctx.stroke();-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    }-->
+
+<!--    animate() {-->
+<!--        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);-->
+
+<!--        // Update and draw points-->
+<!--        this.points.forEach(point => {-->
+<!--            point.update(this.canvas.width, this.canvas.height, this.mousePos);-->
+<!--            point.draw(this.ctx);-->
+<!--        });-->
+
+<!--        // Draw connecting lines-->
+<!--        this.drawLines();-->
+
+<!--        requestAnimationFrame(() => this.animate());-->
+<!--    }-->
+<!--}-->
+
+<!--// Initialize background when document is loaded-->
+<!--document.addEventListener('DOMContentLoaded', () => {-->
+<!--    new Background();-->
+<!--});-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+<!--=======================================================VERSION 2============================================================-->
+<!--=======================================================VERSION 2============================================================-->
+<!--=======================================================VERSION 2============================================================-->
+<!--=======================================================VERSION 2============================================================-->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Check-Up</title>
+
+    <style>
+        /* =====================================================
+           BACKGROUND (unchanged from the original page)
+           ===================================================== */
+        * {
+            font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #canvas-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0a192f, #000000);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 47, 0.05);
+            z-index: -1;
+        }
+
+        /* Same centering + white text as before. Only change: min-height + padding
+           instead of a fixed 100vh so the card can never be clipped on small screens,
+           and overflow-x hidden so the page never scrolls sideways. */
+        html,
+        body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: clamp(16px, 5vw, 32px);
+            color: white;
+        }
+
+        /* =====================================================
+           FORM AREA (compact, responsive, neon border)
+           ===================================================== */
+        :root {
+            --sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+            --blue: #4a9eff;
+            --text: #f2f6ff;
+            --muted: #b9c8e2;
+            --danger: #ff8f8f;
+            --grad: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Frosted glass card */
+        .card {
+            --radius: 18px;
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            padding: clamp(18px, 5vw, 26px) clamp(16px, 5vw, 24px);
+            text-align: center;
+            border-radius: var(--radius);
+            border: 1px solid rgba(110, 170, 255, 0.28);
+            background: linear-gradient(180deg, rgba(22, 40, 74, 0.62), rgba(11, 22, 44, 0.56));
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            backdrop-filter: blur(18px) saturate(140%);
+            box-shadow:
+                0 0 14px rgba(74, 158, 255, 0.4),
+                0 0 38px rgba(124, 58, 237, 0.28),
+                0 24px 60px -18px rgba(0, 0, 0, 0.75),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Subtle inner top highlight */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            pointer-events: none;
+        }
+
+        /* Neon border: a thin gradient ring cut out with a mask.
+           Static gradient by default; the .neon-spin class (added by JS where supported)
+           turns it into a slowly rotating ring. */
+        .card::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            padding: 1.5px;
+            border-radius: calc(var(--radius) + 1px);
+            background: linear-gradient(135deg, #22d3ee 0%, #4a9eff 35%, #8b5cf6 70%, #22d3ee 100%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+            animation: neon-breathe 3.2s ease-in-out infinite;
+        }
+
+        .card.neon-spin::after {
+            background: conic-gradient(from var(--neon-angle, 0deg),
+                #22d3ee, #4a9eff, #8b5cf6, #4a9eff, #22d3ee);
+            animation: neon-spin 7s linear infinite, neon-breathe 3.2s ease-in-out infinite;
+        }
+
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            .card { background: rgba(10, 20, 42, 0.93); }
+        }
+
+        /* Icon badge */
+        .badge {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 12px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--grad);
+            box-shadow:
+                0 8px 20px -6px rgba(99, 102, 241, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .badge svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .title {
+            font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            color: #fff;
+        }
+
+        .subtitle {
+            margin-top: 6px;
+            font-size: clamp(0.78rem, 3.2vw, 0.875rem);
+            line-height: 1.45;
+            color: var(--muted);
+        }
+
+        /* Code display */
+        .code-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .code-box {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            min-height: 54px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid rgba(110, 170, 255, 0.3);
+            background:
+                repeating-linear-gradient(135deg,
+                    rgba(130, 180, 255, 0.08) 0,
+                    rgba(130, 180, 255, 0.08) 1px,
+                    transparent 1px,
+                    transparent 8px),
+                rgba(6, 14, 32, 0.65);
+            cursor: default;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .code-text {
+            font-family: var(--mono);
+            font-size: clamp(1.15rem, 5.8vw, 1.6rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: 0.26em;
+            padding-left: 0.26em; /* balances the trailing letter-spacing so the code looks centered */
+            text-align: center;
+            overflow-wrap: anywhere;
+            color: #a9d6ff;
+            text-shadow:
+                0 0 6px rgba(120, 190, 255, 0.9),
+                0 0 16px rgba(74, 158, 255, 0.6);
+            transition: opacity 0.2s ease, filter 0.2s ease;
+        }
+
+        .code-box.is-refreshing .code-text {
+            opacity: 0.35;
+            filter: blur(2px);
+        }
+
+        .icon-btn {
+            flex: 0 0 auto;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            border: 1px solid rgba(110, 170, 255, 0.45);
+            background: rgba(74, 158, 255, 0.12);
+            color: #cfe4ff;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.12s ease;
+        }
+
+        .icon-btn:hover {
+            background: rgba(74, 158, 255, 0.24);
+            border-color: #7db8ff;
+            color: #fff;
+        }
+
+        .icon-btn:active { transform: scale(0.95); }
+        .icon-btn[aria-disabled="true"] { cursor: progress; }
+
+        .icon-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .icon-btn.is-spinning svg { animation: spin 0.8s linear infinite; }
+
+        /* Copy button: swaps to a check icon briefly after copying */
+        .icon-btn .icon-check { display: none; }
+        .icon-btn.is-copied .icon-copy { display: none; }
+        .icon-btn.is-copied .icon-check { display: block; }
+        .icon-btn.is-copied {
+            color: #9be7b5;
+            border-color: rgba(155, 231, 181, 0.6);
+            background: rgba(80, 200, 120, 0.14);
+        }
+
+        /* Input */
+        .field {
+            margin-top: 16px;
+            text-align: left;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: clamp(0.8rem, 3.2vw, 0.85rem);
+            font-weight: 500;
+            color: #dbe7fb;
+        }
+
+        .input-wrap { position: relative; }
+
+        .lead-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            width: 18px;
+            height: 18px;
+            transform: translateY(-50%);
+            fill: none;
+            stroke: #8fc0ff;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+
+        /* Input text stays at 16px+ so iOS Safari doesn't zoom the page on focus */
+        .input {
+            width: 100%;
+            height: 46px;
+            padding: 0 12px 0 40px;
+            border-radius: 11px;
+            border: 2px solid var(--blue);
+            outline: none;
+            background: rgba(6, 14, 32, 0.7);
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: clamp(1rem, 3.8vw, 1.05rem);
+            letter-spacing: 0.06em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input::placeholder {
+            color: #9db2d3;
+            font-family: var(--sans);
+            letter-spacing: 0;
+            opacity: 1;
+        }
+
+        .input:focus {
+            border-color: #7dbbff;
+            box-shadow:
+                0 0 0 3px rgba(74, 158, 255, 0.22),
+                0 0 18px rgba(74, 158, 255, 0.35);
+        }
+
+        .input[aria-invalid="true"] {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px rgba(255, 143, 143, 0.16);
+        }
+
+        .error {
+            min-height: 1.2rem; /* reserved so the card doesn't jump when the message appears */
+            margin-top: 6px;
+            font-size: clamp(0.78rem, 3.2vw, 0.85rem);
+            line-height: 1.4;
+            color: var(--danger);
+            text-align: left;
+        }
+
+        /* Submit button */
+        .btn-submit {
+            width: 100%;
+            height: 46px;
+            margin-top: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 0;
+            border-radius: 11px;
+            background: var(--grad);
+            color: #fff;
+            font-size: clamp(0.9rem, 3.6vw, 0.97rem);
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow:
+                0 8px 22px -8px rgba(99, 102, 241, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.07);
+            box-shadow:
+                0 14px 28px -8px rgba(99, 102, 241, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0) scale(0.98);
+            filter: brightness(0.97);
+        }
+
+        .btn-submit svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.18s ease;
+        }
+
+        .btn-submit:hover .arrow { transform: translateX(3px); }
+
+        .btn-submit .btn-loading { display: none; align-items: center; gap: 8px; }
+        .btn-submit.is-loading .btn-label,
+        .btn-submit.is-loading .arrow { display: none; }
+        .btn-submit.is-loading .btn-loading { display: inline-flex; }
+
+        .btn-submit[aria-disabled="true"],
+        .btn-submit[aria-disabled="true"]:hover,
+        .btn-submit[aria-disabled="true"]:active {
+            transform: none;
+            filter: none;
+            cursor: progress;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: #fff;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .btn-submit:focus-visible,
+        .icon-btn:focus-visible {
+            outline: 3px solid #cfe4ff;
+            outline-offset: 3px;
+        }
+
+        /* Motion */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes neon-spin { to { --neon-angle: 360deg; } }
+
+        @keyframes neon-breathe {
+            0%, 100% { opacity: 0.75; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            15% { transform: translateX(-8px); }
+            30% { transform: translateX(7px); }
+            45% { transform: translateX(-6px); }
+            60% { transform: translateX(5px); }
+            75% { transform: translateX(-3px); }
+            90% { transform: translateX(2px); }
+        }
+
+        .card.shake { animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+
+        /* ---------- Responsive ---------- */
+
+        /* Tablets: a touch wider */
+        @media (min-width: 600px) and (max-width: 1100px) {
+            .card { max-width: 380px; }
+        }
+
+        /* Touch screens (phones + tablets): comfortable tap targets */
+        @media (pointer: coarse) {
+            .icon-btn { width: 46px; height: 46px; }
+            .input,
+            .btn-submit { height: 48px; }
+        }
+
+        /* Small phones */
+        @media (max-width: 360px) {
+            .code-row { gap: 6px; }
+            .icon-btn { width: 40px; height: 40px; }
+            .code-text { letter-spacing: 0.18em; padding-left: 0.18em; }
+        }
+
+        /* Short screens (landscape phones): drop the badge and tighten spacing */
+        @media (max-height: 560px) {
+            .badge { display: none; }
+            .card { padding-top: 16px; padding-bottom: 16px; }
+            .code-row,
+            .field { margin-top: 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card.shake { animation: none; }
+            .card::after,
+            .card.neon-spin::after { animation: none; }
+            .btn-submit,
+            .btn-submit:hover,
+            .btn-submit:active,
+            .btn-submit:hover .arrow,
+            .icon-btn:active { transform: none; }
+            .spinner { display: none; }
+            .icon-btn.is-spinning svg { animation: none; }
+            .code-box.is-refreshing .code-text { filter: none; }
+            .card *,
+            .card *::before,
+            .card *::after { transition-duration: 0.01ms !important; }
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <canvas id="canvas-background"></canvas>
+
+    <div class="overlay"></div>
+
+    <!-- Same form contract as before: method="post", no action (posts to the current URL),
+         answer field name="captcha_answer", template variables {{ captcha }} and {{ error }}. -->
+    <form id="gate-form" class="card" method="post" novalidate {% if error %}data-has-error="true"{% endif %}>
+
+        <div class="badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/>
+                <path d="M9 12l2 2 4-4"/>
+            </svg>
+        </div>
+
+        <h1 class="title">Quick check before you enter</h1>
+        <p class="subtitle">Type the code below to unlock the portfolio.</p>
+
+        <div class="code-row">
+            <button type="button" class="icon-btn" id="copy-btn" aria-label="Copy code" title="Copy code">
+                <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="9" y="9" width="12" height="12" rx="2.5"/>
+                    <path d="M5 15V6a2 2 0 0 1 2-2h8"/>
+                </svg>
+                <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12.5l4.5 4.5L19 7.5"/>
+                </svg>
+            </button>
+
+            <div class="code-box" id="code-box">
+                <span class="sr-only">Your code: </span><span class="code-text" id="captcha-code">{{ captcha }}</span>
+            </div>
+
+            <button type="button" class="icon-btn" id="refresh-btn" aria-label="Get a new code" title="Get a new code">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+                    <path d="M21 3v5h-5"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="field">
+            <label for="capt">Enter the code</label>
+            <div class="input-wrap">
+                <svg class="lead-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="2" y="6" width="20" height="12" rx="2.5"/>
+                    <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7.5 14h9"/>
+                </svg>
+                <input
+                    class="input"
+                    type="text"
+                    id="capt"
+                    name="captcha_answer"
+                    placeholder="Type the code"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    spellcheck="false"
+                    enterkeyhint="go"
+                    required
+                    aria-describedby="form-error">
+            </div>
+            <p class="error" id="form-error" aria-live="assertive" aria-atomic="true"></p>
+            <noscript>{% if error %}<p class="error">That code doesn’t match. Try again.</p>{% endif %}</noscript>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn" aria-disabled="false">
+            <span class="btn-label">Continue to portfolio</span>
+            <span class="btn-loading"><span class="spinner" aria-hidden="true"></span>Verifying…</span>
+            <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+        </button>
+
+        <p class="sr-only" id="status-msg" role="status" aria-live="polite"></p>
+    </form>
+
+
+    <!-- =====================================================
+         BACKGROUND SCRIPT (unchanged from the original page)
+         ===================================================== -->
+    <script>
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.velocity = {
+            x: (Math.random() - 0.5) * 0.8, // Reduced speed
+            y: (Math.random() - 0.5) * 0.8
+        };
+        this.baseRadius = 3;
+        this.radius = this.baseRadius;
+        this.z = Math.random() * 100; // Z-coordinate for 3D effect
+    }
+
+    update(width, height, mousePos) {
+        // Slower movement
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+
+        // Enhanced mouse interaction
+        if (mousePos) {
+            const dx = mousePos.x - this.x;
+            const dy = mousePos.y - this.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const force = (150 - Math.min(distance, 150)) / 150; // Increased interaction radius
+
+            if (distance < 150) {
+                this.radius = this.baseRadius + (force * 4);
+                // Stronger push effect
+                this.x -= (dx / distance) * force * 3;
+                this.y -= (dy / distance) * force * 3;
+            } else {
+                this.radius = this.baseRadius;
+            }
+        }
+
+        // Bounce off walls with more damping
+        if (this.x < 0 || this.x > width) {
+            this.velocity.x *= -0.9;
+            this.x = this.x < 0 ? 0 : width;
+        }
+        if (this.y < 0 || this.y > height) {
+            this.velocity.y *= -0.9;
+            this.y = this.y < 0 ? 0 : height;
+        }
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+    }
+}
+
+class Background {
+    constructor() {
+        this.canvas = document.getElementById('canvas-background');
+        this.ctx = this.canvas.getContext('2d');
+        this.points = [];
+        this.numPoints = 60; // Reduced number of points
+        this.connectionDistance = 150; // Reduced connection distance
+        this.mousePos = null;
+        this.planePoints = []; // Store points forming planes
+        this.resizeCanvas();
+        this.init();
+
+        window.addEventListener('resize', () => {
+            this.resizeCanvas();
+            this.init();
+        });
+
+        this.canvas.addEventListener('mousemove', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            this.mousePos = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        });
+
+        this.canvas.addEventListener('mouseleave', () => {
+            this.mousePos = null;
+        });
+
+        this.animate();
+    }
+
+    resizeCanvas() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+
+    init() {
+        this.points = [];
+        for (let i = 0; i < this.numPoints; i++) {
+            const x = Math.random() * this.canvas.width;
+            const y = Math.random() * this.canvas.height;
+            this.points.push(new Point(x, y));
+        }
+    }
+
+    drawLines() {
+        // Draw regular connecting lines
+        for (let i = 0; i < this.points.length; i++) {
+            for (let j = i + 1; j < this.points.length; j++) {
+                const p1 = this.points[i];
+                const p2 = this.points[j];
+                const distance = Math.sqrt(
+                    Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2)
+                );
+
+                if (distance < this.connectionDistance) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(p1.x, p1.y);
+                    this.ctx.lineTo(p2.x, p2.y);
+                    this.ctx.strokeStyle = '#ffffff';
+                    this.ctx.lineWidth = 0.5; // Thinner lines
+                    this.ctx.stroke();
+                }
+            }
+        }
+
+        // Draw cursor connections
+        if (this.mousePos) {
+            this.points.forEach(point => {
+                const distance = Math.sqrt(
+                    Math.pow(this.mousePos.x - point.x, 2) +
+                    Math.pow(this.mousePos.y - point.y, 2)
+                );
+
+                if (distance < this.connectionDistance) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(point.x, point.y);
+                    this.ctx.lineTo(this.mousePos.x, this.mousePos.y);
+                    this.ctx.strokeStyle = '#ffffff';
+                    this.ctx.lineWidth = 0.8;
+                    this.ctx.stroke();
+                }
+            });
+        }
+    }
+
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Update and draw points
+        this.points.forEach(point => {
+            point.update(this.canvas.width, this.canvas.height, this.mousePos);
+            point.draw(this.ctx);
+        });
+
+        // Draw connecting lines
+        this.drawLines();
+
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Initialize background when document is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new Background();
+});
+    </script>
+
+    <!-- =====================================================
+         FORM SCRIPT (new)
+         The code is never generated here. It is only ever read from the Flask response.
+         ===================================================== -->
+    <script>
+(function () {
+    'use strict';
+
+    var MSG_WRONG = 'That code doesn’t match. Try again.';
+    var MSG_EMPTY = 'Please type the code first.';
+
+    var form       = document.getElementById('gate-form');
+    var codeBox    = document.getElementById('code-box');
+    var codeEl     = document.getElementById('captcha-code');
+    var input      = document.getElementById('capt');
+    var errorEl    = document.getElementById('form-error');
+    var statusEl   = document.getElementById('status-msg');
+    var submitBtn  = document.getElementById('submit-btn');
+    var refreshBtn = document.getElementById('refresh-btn');
+    var copyBtn    = document.getElementById('copy-btn');
+    var copyTimer  = null;
+
+    var submitting = false;
+    var refreshing = false;
+    var failsafe   = null;
+
+    /* ---------- helpers ---------- */
+
+    function say(text) {
+        statusEl.textContent = '';
+        window.setTimeout(function () { statusEl.textContent = text; }, 50);
+    }
+
+    function shake() {
+        form.classList.remove('shake');
+        void form.offsetWidth; // restart the animation if it is already running
+        form.classList.add('shake');
+    }
+
+    form.addEventListener('animationend', function (e) {
+        if (e.animationName === 'shake') { form.classList.remove('shake'); }
+    });
+
+    function showError(message, withShake) {
+        errorEl.textContent = '';
+        input.setAttribute('aria-invalid', 'true');
+        // short delay so the aria-live region re-announces even an identical message
+        window.setTimeout(function () { errorEl.textContent = message; }, 40);
+        if (withShake) { shake(); }
+    }
+
+    function clearError() {
+        errorEl.textContent = '';
+        input.removeAttribute('aria-invalid');
+    }
+
+    function setLoading(on) {
+        submitting = on;
+        submitBtn.classList.toggle('is-loading', on);
+        submitBtn.setAttribute('aria-disabled', on ? 'true' : 'false');
+        form.setAttribute('aria-busy', on ? 'true' : 'false');
+    }
+
+    /* ---------- request a new code from Flask ----------
+       The page has no separate refresh endpoint, so this does what loading the page does:
+       a GET to the same URL the page is already on. The code is read from the returned HTML. */
+
+    function refreshCode(options) {
+        options = options || {};
+        if (refreshing) { return Promise.resolve(); }
+        refreshing = true;
+
+        refreshBtn.classList.add('is-spinning');
+        refreshBtn.setAttribute('aria-disabled', 'true');
+        codeBox.classList.add('is-refreshing');
+        codeBox.setAttribute('aria-busy', 'true');
+
+        return fetch(window.location.href, {
+                method: 'GET',
+                credentials: 'same-origin',
+                cache: 'no-store'
+            })
+            .then(function (res) {
+                if (!res.ok || res.redirected) { throw new Error('unexpected response'); }
+                return res.text();
+            })
+            .then(function (html) {
+                var doc   = new DOMParser().parseFromString(html, 'text/html');
+                var fresh = doc.getElementById('captcha-code');
+                var value = fresh ? fresh.textContent.trim() : '';
+                if (!value) { throw new Error('no code in response'); }
+
+                codeEl.textContent = value;
+                if (!options.keepError) { clearError(); }
+                if (!options.silent) {
+                    input.value = '';
+                    input.focus();
+                }
+                say('A new code has been loaded.');
+            })
+            .catch(function () {
+                // Manual refresh falls back to a normal GET navigation (never reload(),
+                // which would re-send a POST after a wrong answer).
+                if (options.fallbackNavigate) { window.location.replace(window.location.href); }
+            })
+            .then(function () {
+                refreshing = false;
+                refreshBtn.classList.remove('is-spinning');
+                refreshBtn.setAttribute('aria-disabled', 'false');
+                codeBox.classList.remove('is-refreshing');
+                codeBox.removeAttribute('aria-busy');
+            });
+    }
+
+    refreshBtn.addEventListener('click', function () {
+        refreshCode({ fallbackNavigate: true });
+    });
+
+    /* ---------- copy button ----------
+       Copies whatever code is currently displayed (read from the page, never generated here). */
+
+    function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+        }
+        // Fallback for non-HTTPS / older browsers
+        return new Promise(function (resolve, reject) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.top = '-1000px';
+            ta.style.fontSize = '16px';
+            document.body.appendChild(ta);
+            ta.select();
+            var done = false;
+            try { done = document.execCommand('copy'); } catch (err) { done = false; }
+            document.body.removeChild(ta);
+            if (done) { resolve(); } else { reject(new Error('copy failed')); }
+        });
+    }
+
+    copyBtn.addEventListener('click', function () {
+        if (refreshing) { return; }
+        var text = codeEl.textContent.trim();
+        if (!text) { return; }
+
+        copyText(text).then(function () {
+            copyBtn.classList.add('is-copied');
+            say('Code copied.');
+            window.clearTimeout(copyTimer);
+            copyTimer = window.setTimeout(function () { copyBtn.classList.remove('is-copied'); }, 1800);
+            input.focus(); // next step is pasting it
+        }).catch(function () {
+            say('Could not copy the code. Please type it instead.');
+        });
+    });
+
+    /* ---------- submit ----------
+       Native POST to the same URL as before. Flask verifies and either redirects
+       (existing success behavior) or re-renders this page with `error` set. */
+
+    form.addEventListener('submit', function (e) {
+        if (submitting) { e.preventDefault(); return; }
+
+        var value = input.value.trim(); // trim only; case is sent exactly as typed
+        if (!value) {
+            e.preventDefault();
+            input.value = '';
+            showError(MSG_EMPTY, true);
+            input.focus();
+            return;
+        }
+
+        input.value = value;
+        clearError();
+        setLoading(true);
+
+        // If the navigation is cancelled (Stop button, etc.), don't stay stuck in "Verifying…"
+        window.clearTimeout(failsafe);
+        failsafe = window.setTimeout(function () { setLoading(false); }, 20000);
+    });
+
+    input.addEventListener('input', function () {
+        if (input.hasAttribute('aria-invalid')) { clearError(); }
+    });
+
+    /* ---------- keep the code from being selected or copied by hand ----------
+       (the Copy button above is the only way to copy it) */
+
+    ['copy', 'cut', 'contextmenu', 'selectstart', 'dragstart'].forEach(function (type) {
+        codeBox.addEventListener(type, function (e) { e.preventDefault(); });
+    });
+
+    document.addEventListener('copy', function (e) {
+        var sel = window.getSelection && window.getSelection();
+        if (sel && sel.rangeCount && sel.containsNode(codeBox, true)) { e.preventDefault(); }
+    });
+
+    /* ---------- neon border ----------
+       Registering --neon-angle lets the browser animate the gradient angle smoothly.
+       Without support, the static neon border stays. */
+
+    if (window.CSS && CSS.registerProperty) {
+        try {
+            CSS.registerProperty({ name: '--neon-angle', syntax: '<angle>', initialValue: '0deg', inherits: false });
+        } catch (err) { /* already registered */ }
+        form.classList.add('neon-spin');
+    }
+
+    /* ---------- page load ---------- */
+
+    input.focus({ preventScroll: true });
+
+    // Flask re-rendered the page after a wrong answer
+    if (form.hasAttribute('data-has-error')) {
+        input.value = '';
+        showError(MSG_WRONG, true);
+        refreshCode({ keepError: true, silent: true });
+    }
+
+    // Back button after a successful submit can restore this page from cache
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.clearTimeout(failsafe);
+            setLoading(false);
+            input.value = '';
+            clearError();
+            refreshCode({ silent: true });
+            input.focus();
+        }
+    });
+})();
+    </script>
+</body>
+</html>
