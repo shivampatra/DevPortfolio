@@ -1,46 +1,64 @@
-import os
-import logging
+"""
+Portfolio app: a CAPTCHA gate in front of the portfolio.
+Every CAPTCHA attempt (right or wrong) is saved, with device details, to MySQL.
+"""
 import json
+import logging
+import os
 import random
-import string
-import pymysql
-from flask import Flask, render_template, request, redirect, url_for, Blueprint, session
+from functools import wraps
 
-# Define BASE_DIR
+import pymysql
+from flask import Flask, redirect, render_template, request, session, url_for
+
+from google_sheets import send_to_google_sheets
+
+# =============================================================================
+# Setup
+# =============================================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
 app = Flask(__name__)
-# app.secret_key = "your_secret_key_here"  # Required for session
-app.secret_key = os.environ.get("SECRET_KEY", "your_secret_key_here")
 
+# Secrets come from the environment (set them in the PythonAnywhere WSGI file), never from this file.
+DEFAULT_SECRET_KEY = "your_secret_key_here"
+app.secret_key = os.environ.get("SECRET_KEY", DEFAULT_SECRET_KEY)
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+)
 
-
-# Database settings. The password is NOT written here - it comes from the environment.
 DB_CONFIG = {
     "host": os.environ.get("DB_HOST", "shivamportfolio.mysql.pythonanywhere-services.com"),
     "user": os.environ.get("DB_USER", "shivamportfolio"),
     "password": os.environ.get("DB_PASSWORD", ""),
     "database": os.environ.get("DB_NAME", "shivamportfolio$Test"),
     "charset": "utf8mb4",
-    "connect_timeout": 5,   # a slow database must never hang the CAPTCHA page
-    "read_timeout": 5,
-    "write_timeout": 5,
+    "connect_timeout": 3,   # a slow database must never hang the CAPTCHA page
+    "read_timeout": 3,
+    "write_timeout": 3,
 }
 
 MAX_META_BYTES = 20000  # ignore an oversized device_meta field
 
+# Today only "/" is behind the CAPTCHA, so /projects/<id> and /contact can be opened directly.
+# Set to True to send visitors who haven't passed the CAPTCHA back to the gate on those pages too.
+GATE_PROJECT_PAGES = False
+
+if app.secret_key == DEFAULT_SECRET_KEY:
+    logging.warning("SECRET_KEY is not set: the placeholder key is in use, so session cookies can be forged.")
+if not DB_CONFIG["password"]:
+    logging.warning("DB_PASSWORD is not set: visitor details will not be saved.")
 
 
-
-
-
-# Load data from JSON files
+# =============================================================================
+# Portfolio data
+# =============================================================================
 def load_json(filename):
     file_path = os.path.join(BASE_DIR, 'data', filename)
     try:
@@ -53,19 +71,15 @@ def load_json(filename):
         logging.error(f"Invalid JSON in file: {file_path}")
         return {}
 
-# Load data
+
 projects = load_json('projects.json')
 skills = load_json('skills.json')
 tech_stack = load_json('tech_stack.json')
 
 
-
-
-
-# ========================================================================Newly Added============================================
-# ========================================================================Newly Added============================================
-
-
+# =============================================================================
+# Visitor logging (MySQL)
+# =============================================================================
 def get_db_connection():
     # A fresh connection per save. PythonAnywhere's MySQL closes idle connections after
     # 5 minutes, so reusing one connection would randomly fail ("server has gone away").
@@ -238,13 +252,9 @@ def save_visit(captcha_passed):
         logging.exception("Could not save visitor details")
 
 
-
-
-# __________________________________________________________________________________________________________________________--
-
-
-
-
+# =============================================================================
+# CAPTCHA
+# =============================================================================
 def generate_captcha():
     """Generate a complex CAPTCHA with words, symbols, and numbers"""
     words = ["apple", "orange", "banana", "grape", "melon", "pear", "cherry"]
@@ -261,80 +271,91 @@ def generate_captcha():
 
     return " ".join(captcha_parts)
 
+
+def gate_required(view):
+    """Optional guard for other pages. It does nothing unless GATE_PROJECT_PAGES is True."""
+    @wraps(view)
+    def wrapper(*args, **kwargs):
+        if GATE_PROJECT_PAGES and not session.get('captcha_passed'):
+            return redirect(url_for('index'))
+        return view(*args, **kwargs)
+    return wrapper
+
+
+# =============================================================================
+# Routes
+# =============================================================================
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # Check if user has already passed the CAPTCHA
+    # User has already passed the CAPTCHA: show the main page
     if session.get('captcha_passed'):
-        # User has passed CAPTCHA, show the main page
         return render_template('index.html',
-                              projects=projects,
-                              skills=skills,
-                              tech_stack=tech_stack)
-    else:
-        # User hasn't passed CAPTCHA yet
-        if request.method == 'POST':
-            # User is submitting CAPTCHA answer
-            user_answer = request.form.get('captcha_answer', '').strip().lower()
-            correct_answer = ' '.join(session.get('captcha_words', [])).lower()
-            if user_answer == correct_answer:
-                save_visit(True)                                   # <-- ADD
-                # CAPTCHA passed
-                session['captcha_passed'] = True
-                return redirect(url_for('index'))
-            else:
-                save_visit(False)                                  # <-- ADD
-                # CAPTCHA failed, generate a new one
-                captcha = generate_captcha()
-                session['captcha_words'] = captcha.split()
-                return render_template('captcha.html',
-                                      captcha=captcha,
-                                      error="Incorrect CAPTCHA, please try again")
-        else:
-            # Initial GET request, show CAPTCHA
-            captcha = generate_captcha()
-            session['captcha_words'] = captcha.split()
-            return render_template('captcha.html', captcha=captcha)
+                               projects=projects,
+                               skills=skills,
+                               tech_stack=tech_stack)
+
+    # User is submitting a CAPTCHA answer
+    if request.method == 'POST':
+        user_answer = request.form.get('captcha_answer', '').strip().lower()
+        correct_answer = ' '.join(session.get('captcha_words', [])).lower()
+
+        if user_answer == correct_answer:
+            save_visit(True)
+            session['captcha_passed'] = True
+            return redirect(url_for('index'))
+
+        # Wrong answer: record the attempt, then issue a new CAPTCHA
+        save_visit(False)
+        captcha = generate_captcha()
+        session['captcha_words'] = captcha.split()
+        return render_template('captcha.html',
+                               captcha=captcha,
+                               error="Incorrect CAPTCHA, please try again")
+
+    # Initial GET request (also used by the page's refresh button): show a fresh CAPTCHA
+    captcha = generate_captcha()
+    session['captcha_words'] = captcha.split()
+    return render_template('captcha.html', captcha=captcha)
 
 
 @app.route('/projects/<project_id>')
+@gate_required
 def project_detail(project_id):
-    # In a real app, you'd fetch the specific project from database
-    # Here we're just passing a placeholder
-    project = next((p for p in projects if p['link'] == f'/projects/{project_id}'), None)
+    # In a real app, you'd fetch the specific project from a database
+    project = next(
+        (p for p in projects
+         if isinstance(p, dict) and p.get('link') == f'/projects/{project_id}'),
+        None
+    )
     if project:
         return render_template('project_detail.html', project=project)
     return redirect(url_for('index'))
 
 
-from google_sheets import send_to_google_sheets
 @app.route('/contact', methods=['POST'])
+@gate_required
 def contact():
-    if request.method == 'POST':
-        try:
-            name = request.form.get('name')
-            email = request.form.get('email')
-            message = request.form.get('message')
+    try:
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
 
-            logging.info(f"Received form data - Name: {name}, Email: {email}")
+        logging.info(f"Received form data - Name: {name}, Email: {email}")
 
-            # Send data to Google Sheets
-            result = send_to_google_sheets(name, email, message)
-            logging.info(f"Google Sheets result: {result}")
+        # Send data to Google Sheets
+        result = send_to_google_sheets(name, email, message) or {}
+        logging.info(f"Google Sheets result: {result}")
 
-            # Check if the submission was successful
-            if result and result.get("result") == "Success":
-                return render_template('thank_you.html', name=name)
-            else:
-                # Handle error - properly extract the error message
-                error_message = result.get("message", result.get("error", "Unknown error"))
-                logging.error(f"Error from Google Sheets: {error_message}")
-                return render_template('error.html', error=error_message), 500
+        if result.get("result") == "Success":
+            return render_template('thank_you.html', name=name)
 
-        except Exception as e:
-            logging.exception("Unexpected error in contact route")
-            return render_template('error.html', error=str(e)), 500
+        error_message = result.get("message", result.get("error", "Unknown error"))
+        logging.error(f"Error from Google Sheets: {error_message}")
+        return render_template('error.html', error=error_message), 500
 
-    return redirect(url_for('index'))
+    except Exception as e:
+        logging.exception("Unexpected error in contact route")
+        return render_template('error.html', error=str(e)), 500
 
 
 # bandana box
@@ -342,5 +363,7 @@ def contact():
 # def box():
 #     return render_template('bbox.html')
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Local use only (PythonAnywhere runs the app through WSGI). Turn debug on with FLASK_DEBUG=1.
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
